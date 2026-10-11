@@ -1,0 +1,9 @@
+{
+  "sheet": "hazards",
+  "about": "Hue's obstacles that come for Hue Potato in later waves. Each one takes a colour Hue Potato has found; with the background in that colour it vanishes and can be walked through, as in Hue (hide to dodge works on them too). They hurt only Hue Potato, through Brotato's own damage (dodge, armour and invincibility frames apply). A new one appears every interval_s while fewer than the wave's count are out; count = min(count_max, count_base + (wave - first_wave) / count_per_waves). damage = damage_base + damage_per_wave * wave. warn_s: shown faintly before going live. active_s: how long a laser gate stays on (boulders roll until they leave the arena). size_px: a laser beam's thickness, or a boulder's diameter. Options: hue_hazards.",
+  "columns": ["id", "name_key", "hint_key", "first_wave", "interval_s", "count_base", "count_per_waves", "count_max", "warn_s", "active_s", "damage_base", "damage_per_wave", "size_px", "speed_px_s", "asset", "asset2", "asset3", "start_sound", "hit_sound"],
+  "rows": [
+    {"id": "laser_gate",    "name_key": "HUE_HAZARD_LASER",   "hint_key": "HUE_HAZARD_LASER_HINT",   "first_wave": 3, "interval_s": 10, "count_base": 1, "count_per_waves": 5, "count_max": 3, "warn_s": 1.6, "active_s": 6.0, "damage_base": 2, "damage_per_wave": 0.8, "size_px": 16,  "speed_px_s": 0,   "asset": "tex_laser_beam",    "asset2": "tex_laser_canon", "asset3": "tex_laser_canon_mask", "start_sound": "sfx_laser_on",     "hit_sound": "sfx_laser_zap"},
+    {"id": "skull_boulder", "name_key": "HUE_HAZARD_BOULDER", "hint_key": "HUE_HAZARD_BOULDER_HINT", "first_wave": 7, "interval_s": 9,  "count_base": 1, "count_per_waves": 5, "count_max": 3, "warn_s": 1.4, "active_s": 0,   "damage_base": 3, "damage_per_wave": 1.0, "size_px": 104, "speed_px_s": 290, "asset": "tex_skull_boulder", "asset2": "none",            "asset3": "none",                 "start_sound": "sfx_boulder_roll", "hit_sound": "sfx_boulder_hit"}
+  ]
+}

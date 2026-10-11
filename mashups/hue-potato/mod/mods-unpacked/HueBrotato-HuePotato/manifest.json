@@ -1,0 +1,22 @@
+{
+	"name": "HuePotato",
+	"namespace": "HueBrotato",
+	"version_number": "0.1.0",
+	"description": "Hue joins Brotato as a playable potato with Hue's colour wheel: enemies and bullets the colour of the background vanish. Reads Hue's art, music and Mum's letters from your own copy of Hue.",
+	"website_url": "https://melty.gg",
+	"dependencies": [],
+	"extra": {
+		"godot": {
+			"authors": ["Hue Potato authors"],
+			"optional_dependencies": [],
+			"compatible_game_version": ["1.1.15.4"],
+			"compatible_mod_loader_version": ["6.3.0"],
+			"incompatibilities": [],
+			"load_before": [],
+			"tags": ["character", "mashup"],
+			"config_schema": {},
+			"description_rich": "",
+			"image": null
+		}
+	}
+}

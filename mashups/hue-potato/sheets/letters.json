@@ -1,0 +1,17 @@
+{
+  "sheet": "letters",
+  "about": "Mum's story letters (the colour letters are in the colours sheet). wave: the letter is read when that wave starts; 0 = when the run is won. order: letters for the same moment are read one after another. Letters never cut each other off: one that comes while Mum is reading waits its turn. text_key/lines: Hue's own subtitles (HueText VO/<Name>0..lines-1), in the player's language.",
+  "columns": ["id", "wave", "order", "asset", "text_key", "lines"],
+  "rows": [
+    {"id": "letter_intro",      "wave": 1,  "order": 1, "asset": "vo_intro",     "text_key": "VO/Intro",           "lines": 12},
+    {"id": "letter_water",      "wave": 3,  "order": 1, "asset": "vo_water",     "text_key": "VO/Water",           "lines": 5},
+    {"id": "letter_fire",       "wave": 5,  "order": 1, "asset": "vo_fire",      "text_key": "VO/Fire",            "lines": 5},
+    {"id": "letter_temple",     "wave": 7,  "order": 1, "asset": "vo_temple",    "text_key": "VO/Temple",          "lines": 7},
+    {"id": "letter_mountains",  "wave": 9,  "order": 1, "asset": "vo_mountains", "text_key": "VO/Mountains",       "lines": 8},
+    {"id": "letter_tech",       "wave": 11, "order": 1, "asset": "vo_tech",      "text_key": "VO/Tech",            "lines": 7},
+    {"id": "letter_tech_end",   "wave": 12, "order": 1, "asset": "vo_tech_end",  "text_key": "VO/TechEnd",         "lines": 6},
+    {"id": "letter_uni_start",  "wave": 13, "order": 1, "asset": "vo_uni_start", "text_key": "VO/UniversityStart", "lines": 7},
+    {"id": "letter_uni_end",    "wave": 0,  "order": 1, "asset": "vo_uni_end",   "text_key": "VO/UniversityEnd",   "lines": 10},
+    {"id": "letter_ps",         "wave": 0,  "order": 2, "asset": "vo_ps",        "text_key": "VO/PS",              "lines": 3}
+  ]
+}

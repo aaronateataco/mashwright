@@ -1,0 +1,20 @@
+{
+  "sheet": "sounds",
+  "about": "Game events that play Hue's own sounds. assets is a list of hue_assets ids (one picked at random). bus is a Brotato audio bus.",
+  "columns": ["id", "event", "assets", "bus", "volume_tuning", "max_length_tuning"],
+  "rows": [
+    {"id": "sfx_wheel_open",   "event": "wheel opened",          "assets": ["snd_wheel_expand"],   "bus": "Sound", "volume_tuning": "sfx_volume_db", "max_length_tuning": "chime_length_s"},
+    {"id": "sfx_wheel_close",  "event": "wheel closed",          "assets": ["snd_wheel_contract"], "bus": "Sound", "volume_tuning": "sfx_volume_db", "max_length_tuning": "chime_length_s"},
+    {"id": "sfx_colour_goo",   "event": "background colour set", "assets": ["snd_colour_goo_1", "snd_colour_goo_2", "snd_colour_goo_3"], "bus": "Sound", "volume_tuning": "sfx_volume_db", "max_length_tuning": "chime_length_s"},
+    {"id": "sfx_fragment",     "event": "fragment collected",    "assets": ["snd_fragment"],       "bus": "Sound", "volume_tuning": "sfx_volume_db", "max_length_tuning": "banner_seconds"},
+    {"id": "sfx_letter",       "event": "letter subtitle shown", "assets": ["snd_open_letter"],    "bus": "Sound", "volume_tuning": "sfx_volume_db", "max_length_tuning": "chime_length_s"},
+    {"id": "sfx_death",        "event": "Hue Potato died",       "assets": ["snd_death_1", "snd_death_2"], "bus": "Sound", "volume_tuning": "sfx_volume_db", "max_length_tuning": "banner_seconds"},
+    {"id": "sfx_region",       "event": "region banner shown",   "assets": ["snd_level_in"],       "bus": "Sound", "volume_tuning": "sfx_volume_db", "max_length_tuning": "banner_seconds"},
+    {"id": "sfx_laser_on", "event": "laser gate switches on", "assets": ["snd_laser_on"], "bus": "Sound", "volume_tuning": "sfx_volume_db", "max_length_tuning": "hazard_sound_s"},
+    {"id": "sfx_laser_zap", "event": "laser gate hits Hue Potato", "assets": ["snd_laser_zap_1", "snd_laser_zap_2"], "bus": "Sound", "volume_tuning": "sfx_volume_db", "max_length_tuning": "chime_length_s"},
+    {"id": "sfx_boulder_roll", "event": "skull boulder starts rolling", "assets": ["snd_boulder_roll"], "bus": "Sound", "volume_tuning": "sfx_volume_db", "max_length_tuning": "hazard_sound_s"},
+    {"id": "sfx_boulder_hit", "event": "skull boulder hits Hue Potato", "assets": ["snd_boulder_impact", "snd_crush"], "bus": "Sound", "volume_tuning": "sfx_volume_db", "max_length_tuning": "chime_length_s"},
+    {"id": "sfx_crate_break", "event": "a Hue crate is broken", "assets": ["snd_crate_1", "snd_crate_2", "snd_crate_3"], "bus": "Sound", "volume_tuning": "sfx_volume_db", "max_length_tuning": "chime_length_s"},
+    {"id": "sfx_drgrey", "event": "the final wave begins", "assets": ["mus_drgrey"], "bus": "Sound", "volume_tuning": "sfx_volume_db", "max_length_tuning": "drgrey_sting_s"}
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "mashwright": 1,
+  "id": "hue-potato",
+  "title": "Hue Potato",
+  "version": "0.1.0",
+  "authors": [
+    "Hue Potato authors"
+  ],
+  "license": "MIT",
+  "description": "Hue joins Brotato: play Hue Potato, a potato with Hue's hair, ear and eyes and Hue's colour wheel. Enemies, bullets, laser gates and skull boulders the colour of the background vanish. Earn Hue's colours wave by wave, hear Mum's letters, travel through Hue's regions with Hue's music, and fight with Hue's Laser Ring. Everything from Hue is read from your own copy of Hue.",
+  "games": [
+    {
+      "slug": "brotato",
+      "role": "primary",
+      "version": ">=1.1.15",
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ]
+    },
+    {
+      "slug": "hue",
+      "role": "secondary",
+      "title": "Hue"
+    }
+  ],
+  "components": [
+    {
+      "id": "main",
+      "file": "HuePotato-Mod.zip",
+      "label": "Hue Potato mod",
+      "extract": true,
+      "sha256": ""
+    },
+    {
+      "id": "boot",
+      "file": "HuePotato-Boot.zip",
+      "label": "Boot script for Brotato's built-in mod loader",
+      "extract": true,
+      "sha256": ""
+    },
+    {
+      "id": "tools",
+      "file": "HuePotato-vgmstream.zip",
+      "label": "vgmstream audio decoder",
+      "extract": true,
+      "sha256": ""
+    }
+  ],
+  "mappings": [
+    {
+      "component": "main",
+      "from": "",
+      "to": "{game}/mods"
+    },
+    {
+      "component": "boot",
+      "from": "",
+      "to": "{game}"
+    },
+    {
+      "component": "tools",
+      "from": "",
+      "to": "{game}/mods"
+    }
+  ],
+  "launch": {
+    "game": "brotato"
+  },
+  "notes": {
+    "firstLaunch": "Pick Hue Potato on Brotato's character select. Hold Right Click, Space or a trigger for Hue's colour wheel; Q/E switch colours, G goes back to grey.",
+    "linux": "Works with Brotato's native Linux build and with Proton. Hue can be the Linux, Windows or Proton install: the mod finds it in your Steam libraries."
+  },
+  "cover": "cover.jpg"
+}

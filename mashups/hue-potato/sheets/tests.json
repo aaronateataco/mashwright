@@ -1,0 +1,32 @@
+{
+  "sheet": "tests",
+  "about": "In-game checks. result is pending until run in the real game; a release needs every row passed. how says what to do, expected what must be seen (log line or screenshot).",
+  "columns": ["id", "system", "how", "expected", "result"],
+  "rows": [
+    {"id": "t_boot",        "system": "boot",      "how": "Launch Brotato via Steam with boot + mod installed", "expected": "modloader.log: 'Initializing -> HueBrotato-HuePotato' and extensions installed", "result": "passed"},
+    {"id": "t_hue_found",   "system": "assets",    "how": "Launch with Hue installed", "expected": "huepotato.log: Hue found and every hue_assets row loaded", "result": "passed"},
+    {"id": "t_char_select", "system": "character", "how": "Open character select", "expected": "Hue Potato card with Hue's hair/ear/eyes icon and the 6 effect lines", "result": "passed"},
+    {"id": "t_appearance",  "system": "character", "how": "Start a run as Hue Potato", "expected": "Dark potato with Hue's hair, ear and eyes in the arena", "result": "passed"},
+    {"id": "t_wheel",       "system": "wheel",     "how": "Hold right click, point at a slice, release", "expected": "Time slows, wheel with owned colours and Hue symbols, chime; floor turns that colour", "result": "passed"},
+    {"id": "t_hiding",      "system": "hiding",    "how": "Pick the colour of nearby enemies", "expected": "Those enemies and their bullets fade to ghosts, deal no damage, take no hits; weapons aim elsewhere", "result": "passed"},
+    {"id": "t_fragment",    "system": "fragments", "how": "Play to wave 3", "expected": "Orange fragment appears; collecting it adds Orange to the wheel, plays Hue's fragment sound and Mum's Orange letter with subtitles", "result": "passed"},
+    {"id": "t_music",       "system": "music",     "how": "Wave 1 and wave 3", "expected": "Village music then Waterfall music from Hue; region banner with Hue's map icon", "result": "passed"},
+    {"id": "t_items",       "system": "items",     "how": "Shop after a wave", "expected": "Hue items can appear with Hue icons; buying one applies its stats", "result": "passed"},
+    {"id": "t_other_char",  "system": "compat",    "how": "Play a wave as another character", "expected": "No colours, no wheel, normal Brotato music", "result": "passed"},
+    {"id": "t_no_hue",      "system": "assets",    "how": "Launch with the Hue path pointed at an empty folder", "expected": "Title screen says Hue is needed; Hue Potato is not offered; no errors", "result": "passed"},
+    {"id": "t_saved_run",   "system": "compat",    "how": "Save a Hue Potato run, start Brotato once without the mod active (Hue missing), then start it again", "expected": "No engine ERROR naming mods-unpacked; the next start still has mods enabled", "result": "passed"},
+    {"id": "t_boot_multi",  "system": "compat",    "how": "Put a second test mod zip in mods/ beside Hue Potato (Brotatogether also loaded from the Workshop)", "expected": "Each mod initialised exactly once; boot logs which zips it handed over and which it skipped", "result": "passed"},
+    {"id": "t_chain_main",  "system": "compat",    "how": "The second test mod also extends main.gd and tints enemies and the floor", "expected": "Both extensions run; Hue Potato restores the other mod's tint and floor colour instead of white", "result": "passed"},
+    {"id": "t_options",     "system": "options",   "how": "Set hue_music, mum_letters and hue_items_in_shop to false in huepotato.cfg", "expected": "Brotato's music keeps playing, no letters, no Hue items in the pool; the wheel still works", "result": "passed"},
+    {"id": "t_switch_wave", "system": "wave",      "how": "Change colour with Q/E during a wave", "expected": "A wave of the new colour sweeps out from Hue Potato", "result": "passed"},
+    {"id": "t_laser_ring",  "system": "weapon",    "how": "Start a Hue Potato run (the Laser Ring is the starting weapon) and play waves, switching colours", "expected": "Hue's laser cannons orbit the potato joined by beams in the colours found; beams zap enemies they touch; a beam of the background colour fades and doesn't hit", "result": "passed"},
+    {"id": "t_melty",       "system": "melty",     "how": "Install and Play from the Melty app", "expected": "Brotato starts with the mod loaded (same log lines as t_boot)", "result": "pending"},
+    {"id": "t_player_hurt", "system": "wheel", "how": "Play Hue Potato waves with the probe recording every hit (no invulnerability)", "expected": "Enemies of a visible colour hurt Hue Potato; enemies and bullets of the background colour never do", "result": "pending"},
+    {"id": "t_laser_gates", "system": "hazards", "how": "Start at wave 3+ (or spawn one with the probe) and stand in a live gate, then switch to its colour", "expected": "A gate warms up faintly, then a coloured beam spans the arena between two of Hue's cannons; it hurts Hue Potato unless the background is its colour", "result": "pending"},
+    {"id": "t_boulders", "system": "hazards", "how": "Start at wave 7+ (or spawn one with the probe)", "expected": "A coloured skull boulder's path shows, then it rolls across and hurts Hue Potato unless the background is its colour", "result": "pending"},
+    {"id": "t_crates", "system": "crates", "how": "Play a Hue Potato wave until trees appear", "expected": "Trees are Hue's coloured crates; a crate of the background colour fades and can't be hit; breaking one plays Hue's crate sound", "result": "pending"},
+    {"id": "t_story_letters", "system": "letters", "how": "Start a run; reach wave 3; win a run", "expected": "Mum's intro then Aqua letter at the start; Water letter at wave 3, the Orange letter waits its turn; her last letter and PS on winning", "result": "pending"},
+    {"id": "t_drgrey", "system": "drgrey", "how": "Reach wave 20", "expected": "Dr Grey's banner and Hue's DrGreyAppears music; the region music dips under it", "result": "pending"},
+    {"id": "t_dust", "system": "dust", "how": "Play a Hue Potato wave", "expected": "Hue's dust motes drift over the floor under the potatoes and enemies", "result": "pending"}
+  ]
+}

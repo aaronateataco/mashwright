@@ -1,0 +1,29 @@
+{
+  "sheet": "character",
+  "about": "The Hue Potato character added to Brotato's character select. Only this character has the colour wheel. The dark body is Brotato's own potato tinted body_tint, worn as an appearance layer at body_layer_depth (so menus show it too). signature_weapon (weapons sheet) is offered first among the starting weapons.",
+  "columns": ["id", "my_id", "name_key", "unlocked_by_default", "tier", "body_tint", "body_layer_depth", "layers", "icon_layers", "effects", "signature_weapon", "starting_weapons", "wanted_tags", "banned_items", "requires_hue"],
+  "rows": [
+    {
+      "id": "hue_potato",
+      "my_id": "character_hue_potato",
+      "name_key": "HUE_CHARACTER_NAME",
+      "unlocked_by_default": true,
+      "tier": 0,
+      "body_tint": [38, 38, 44],
+      "body_layer_depth": 0,
+      "layers": ["layer_hue_hair", "layer_hue_ear", "layer_hue_eyes"],
+      "icon_layers": ["layer_hue_hair", "layer_hue_ear", "layer_hue_eyes"],
+      "effects": ["eff_char_wheel", "eff_char_fragments", "eff_char_letters", "eff_char_speed", "eff_char_dodge", "eff_char_damage"],
+      "signature_weapon": "laser_ring_1",
+      "starting_weapons": [
+        "res://weapons/ranged/slingshot/1/slingshot_data.tres",
+        "res://weapons/ranged/wand/1/wand_data.tres",
+        "res://weapons/ranged/taser/1/taser_data.tres",
+        "res://weapons/melee/rock/1/rock_data.tres"
+      ],
+      "wanted_tags": ["stat_dodge", "stat_speed"],
+      "banned_items": ["none"],
+      "requires_hue": true
+    }
+  ]
+}

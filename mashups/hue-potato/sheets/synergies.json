@@ -1,0 +1,11 @@
+{
+  "sheet": "synergies",
+  "about": "Hue items that change how the colour wheel plays. Code reads these rows; trigger is one of fragment_collected | colour_switched.",
+  "columns": ["id", "item", "trigger", "action", "amount", "cooldown_s", "cap", "text_key"],
+  "rows": [
+    {"id": "syn_letter_heal",      "item": "item_mums_letter",   "trigger": "fragment_collected", "action": "heal_percent_max_hp", "amount": 25, "cooldown_s": 0,   "cap": 1, "text_key": "HUE_SYN_LETTER"},
+    {"id": "syn_beaker_material",  "item": "item_hue_beaker",    "trigger": "colour_switched",    "action": "materials_per_revealed", "amount": 1, "cooldown_s": 1.0, "cap": 5, "text_key": "HUE_SYN_BEAKER"},
+    {"id": "syn_lantern_reveal",   "item": "item_hue_lantern",   "trigger": "colour_switched",    "action": "slow_revealed_percent", "amount": 40, "cooldown_s": 0,  "cap": 30, "text_key": "HUE_SYN_LANTERN"},
+    {"id": "syn_ring_switch_heal", "item": "item_hue_life_ring", "trigger": "colour_switched",    "action": "heal_flat", "amount": 2, "cooldown_s": 2.0, "cap": 1, "text_key": "HUE_SYN_RING"}
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "sheet": "layers",
+  "about": "Hue body parts placed on Brotato's 150x150 potato canvas (potato body occupies 45,38 to 104,107). Each layer becomes one ItemAppearanceData whose texture is composed at runtime from Hue's own sprite. center/width are in potato-canvas pixels; flip_x mirrors the Hue sprite.",
+  "columns": ["id", "asset", "center_x", "center_y", "width", "rotation_deg", "flip_x", "tint", "position", "depth", "dead_asset"],
+  "rows": [
+    {"id": "layer_hue_hair", "asset": "spr_hue_hair", "center_x": 80, "center_y": 41, "width": 50, "rotation_deg": -8, "flip_x": false, "tint": [38, 38, 44], "position": "HAT", "depth": 400, "dead_asset": "none"},
+    {"id": "layer_hue_ear", "asset": "spr_hue_ear", "center_x": 50, "center_y": 70, "width": 16, "rotation_deg": 0, "flip_x": true, "tint": [38, 38, 44], "position": "OTHER", "depth": -500, "dead_asset": "none"},
+    {"id": "layer_hue_eyes", "asset": "tex_hue_eyes", "center_x": 84, "center_y": 68, "width": 30, "rotation_deg": 0, "flip_x": false, "tint": [255, 255, 255], "position": "EYES", "depth": 500, "dead_asset": "tex_hue_eyes_dead"}
+  ]
+}

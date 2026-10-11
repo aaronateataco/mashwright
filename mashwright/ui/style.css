@@ -1,0 +1,245 @@
+:root {
+  --bg: #f6f3ee; --panel: #ffffff; --ink: #1d1b22; --muted: #6b6676; --line: #e4dfd6;
+  --accent: #d9485f; --accent2: #2e8bc0; --ok: #2f9e6b; --warn: #c98a12; --bad: #c63b3b;
+  --shadow: 0 1px 2px rgba(0,0,0,.06), 0 6px 20px rgba(0,0,0,.06);
+  --radius: 14px;
+  font-family: system-ui, -apple-system, "Segoe UI", Cantarell, "Noto Sans", sans-serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #16151b; --panel: #201f27; --ink: #ece9f2; --muted: #9c97a8; --line: #2f2d38;
+          --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35); }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); min-height: 100vh; display: flex; flex-direction: column; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.top { display: flex; align-items: center; gap: 16px; padding: 12px 20px; background: var(--panel);
+       border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 2; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.15rem; letter-spacing: .2px; }
+nav { display: flex; gap: 4px; flex: 1; flex-wrap: wrap; }
+nav button { background: none; border: 0; color: var(--muted); padding: 8px 14px; border-radius: 999px; font: inherit; cursor: pointer; }
+nav button[aria-selected="true"] { background: var(--accent); color: #fff; }
+nav button:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, .drop:focus-visible {
+  outline: 3px solid var(--accent2); outline-offset: 2px; }
+main { padding: 20px; max-width: 1200px; width: 100%; margin: 0 auto; flex: 1; }
+button { font: inherit; border: 0; border-radius: 10px; padding: 9px 16px; cursor: pointer; background: var(--accent); color: #fff; font-weight: 600; }
+button.secondary { background: var(--accent2); }
+button.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+button.danger { background: transparent; color: var(--bad); border: 1px solid var(--line); }
+button:disabled { opacity: .5; cursor: not-allowed; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+.card h2, .card h3 { margin: 0 0 6px; }
+.card .ver { color: var(--muted); font-weight: 400; font-size: .9rem; }
+.card p.desc { color: var(--muted); margin: 6px 0 12px; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 4; line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.needs { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 6px; }
+.needs li { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.dot.ok { background: var(--ok); } .dot.no { background: var(--bad); } .dot.opt { background: var(--warn); }
+.needs select { max-width: 100%; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.badge { display: inline-block; font-size: .75rem; padding: 2px 8px; border-radius: 999px; background: var(--line); color: var(--ink); }
+.badge.proton, .badge.wine { background: #7a3fd133; } .badge.emulator { background: #2e8bc033; } .badge.device { background: #2f9e6b33; }
+.badge.installed { background: #2f9e6b; color: #fff; }
+.progress { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; margin-top: 10px; }
+.progress > div { height: 100%; background: var(--accent2); width: 0; transition: width .2s; }
+.muted { color: var(--muted); }
+.warn { color: var(--warn); font-size: .9rem; }
+.search input { width: 100%; max-width: 420px; margin-bottom: 14px; }
+input, select { font: inherit; padding: 9px 11px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+label > span { display: block; font-size: .85rem; color: var(--muted); margin-bottom: 4px; }
+.stack { display: grid; gap: 10px; } .row { display: flex; gap: 10px; align-items: end; margin-top: 12px; flex-wrap: wrap; }
+.row .grow { flex: 1; min-width: 200px; } .row .grow input { width: 100%; } .stack input, .stack select { width: 100%; }
+.cards2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.drop { border: 2px dashed var(--line); border-radius: var(--radius); padding: 30px; text-align: center; color: var(--muted); cursor: pointer; }
+.drop.over { border-color: var(--accent); color: var(--ink); }
+.group h3 { margin: 22px 0 8px; font-size: 1rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.gamerow { display: flex; gap: 10px; align-items: center; padding: 10px 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 6px; flex-wrap: wrap; }
+.gamerow .t { font-weight: 600; } .gamerow .p { color: var(--muted); font-size: .85rem; overflow-wrap: anywhere; flex: 1 1 260px; }
+.log { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; min-height: 300px; white-space: pre-wrap; font-size: .85rem; }
+.empty { color: var(--muted); text-align: center; padding: 40px; }
+#toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 18px; border-radius: 10px; max-width: 90vw; box-shadow: var(--shadow); }
+#toast.bad { background: var(--bad); color: #fff; }
+footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 16px; }
+@media (max-width: 480px) { main { padding: 12px; } .top { padding: 10px 12px; } .grid { grid-template-columns: 1fr; } }
+
+/* ======================================================================================
+   GNOME (Adwaita) look, used on Linux. Colours follow libadwaita's palette; the native
+   GNOME window passes the desktop's accent colour and light/dark choice.
+   ====================================================================================== */
+:root[data-theme="gnome"] {
+  --accent-bg: #3584e4;
+  --win: #fafafb; --view: #ffffff; --headerbar: #ffffff; --shade: rgba(0,0,6,.12);
+  --fg: rgba(0,0,6,.8); --dim: rgba(0,0,6,.55);
+  --btn: rgba(0,0,6,.08); --btn-hover: rgba(0,0,6,.12); --btn-active: rgba(0,0,6,.2);
+  --entry: rgba(0,0,6,.06); --sep: rgba(0,0,6,.08);
+  --card: #ffffff;
+  --card-shadow: 0 0 0 1px rgba(0,0,6,.03), 0 1px 3px 1px rgba(0,0,6,.07), 0 2px 6px 2px rgba(0,0,6,.03);
+  --destructive: #e01b24; --destructive-fg: #c30000;
+  --success: #26a269; --warning-fg: #9c6e03;
+  --accent-fg-text: color-mix(in srgb, var(--accent-bg) 82%, black);
+  --bg: var(--win); --panel: var(--card); --ink: var(--fg); --muted: var(--dim); --line: var(--sep);
+  --accent: var(--accent-bg); --accent2: var(--accent-bg); --ok: var(--success); --warn: var(--warning-fg);
+  --bad: var(--destructive-fg); --shadow: var(--card-shadow); --radius: 12px;
+  font-family: "Adwaita Sans", Cantarell, Inter, "Noto Sans", system-ui, sans-serif;
+  font-size: 15px;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="gnome"]:not([data-scheme="light"]) {
+    --win: #222226; --view: #1d1d20; --headerbar: #2e2e32; --shade: rgba(0,0,6,.36);
+    --fg: #ffffff; --dim: rgba(255,255,255,.55);
+    --btn: rgba(255,255,255,.1); --btn-hover: rgba(255,255,255,.15); --btn-active: rgba(255,255,255,.25);
+    --entry: rgba(255,255,255,.1); --sep: rgba(255,255,255,.1);
+    --card: rgba(255,255,255,.08); --card-shadow: 0 0 0 1px rgba(0,0,6,.09), 0 1px 3px 1px rgba(0,0,6,.2);
+    --destructive-fg: #ff938c; --success: #78e9ab; --warning-fg: #f8e45c;
+    --accent-fg-text: color-mix(in srgb, var(--accent-bg) 55%, white);
+  }
+}
+:root[data-theme="gnome"][data-scheme="dark"] {
+  --win: #222226; --view: #1d1d20; --headerbar: #2e2e32; --shade: rgba(0,0,6,.36);
+  --fg: #ffffff; --dim: rgba(255,255,255,.55);
+  --btn: rgba(255,255,255,.1); --btn-hover: rgba(255,255,255,.15); --btn-active: rgba(255,255,255,.25);
+  --entry: rgba(255,255,255,.1); --sep: rgba(255,255,255,.1);
+  --card: rgba(255,255,255,.08); --card-shadow: 0 0 0 1px rgba(0,0,6,.09), 0 1px 3px 1px rgba(0,0,6,.2);
+  --destructive-fg: #ff938c; --success: #78e9ab; --warning-fg: #f8e45c;
+  --accent-fg-text: color-mix(in srgb, var(--accent-bg) 55%, white);
+  color-scheme: dark;
+}
+:root[data-theme="gnome"][data-scheme="light"] { color-scheme: light; }
+
+[data-theme="gnome"] body { background: var(--win); color: var(--fg); -webkit-font-smoothing: antialiased; }
+/* Inside the native window the header bar is GTK's own. */
+[data-shell="gnome"] .top, [data-shell="gnome"] footer { display: none; }
+[data-theme="gnome"] .top { background: var(--headerbar); border-bottom: 1px solid var(--shade); box-shadow: none;
+  min-height: 47px; padding: 6px 12px; justify-content: space-between; }
+[data-theme="gnome"] .brand { font-weight: 700; font-size: 1rem; }
+[data-theme="gnome"] .brand img { width: 24px; height: 24px; }
+[data-theme="gnome"] nav { flex: 0 1 auto; gap: 2px; background: none; }
+[data-theme="gnome"] nav button { color: var(--fg); border-radius: 6px; padding: 6px 14px; font-weight: 700; }
+[data-theme="gnome"] nav button:hover { background: var(--btn-hover); }
+[data-theme="gnome"] nav button[aria-selected="true"] { background: var(--btn-active); color: var(--fg); }
+
+[data-theme="gnome"] main { padding: 24px 18px 32px; max-width: 1080px; }
+[data-theme="gnome"] button { border-radius: 6px; padding: 7px 17px; font-weight: 700; background: var(--btn); color: var(--fg); }
+[data-theme="gnome"] button:hover { background: var(--btn-hover); }
+[data-theme="gnome"] button:active { background: var(--btn-active); }
+/* suggested-action / destructive-action / pill, as in libadwaita */
+[data-theme="gnome"] .actions button:first-child:not(.ghost):not(.danger),
+[data-theme="gnome"] form button[type="submit"] { background: var(--accent-bg); color: #fff; }
+[data-theme="gnome"] .actions button:first-child:not(.ghost):not(.danger):hover,
+[data-theme="gnome"] form button[type="submit"]:hover { background: color-mix(in srgb, var(--accent-bg) 88%, white); }
+[data-theme="gnome"] .actions button { border-radius: 9999px; padding: 8px 22px; }
+[data-theme="gnome"] button.ghost { background: var(--btn); color: var(--fg); border: 0; }
+[data-theme="gnome"] button.danger { background: var(--btn); color: var(--destructive-fg); border: 0; }
+[data-theme="gnome"] button.danger:hover { background: color-mix(in srgb, var(--destructive) 18%, transparent); }
+[data-theme="gnome"] :focus-visible { outline: 2px solid color-mix(in srgb, var(--accent-bg) 50%, transparent) !important; outline-offset: 1px !important; }
+
+[data-theme="gnome"] .card { background: var(--card); border: 0; box-shadow: var(--card-shadow); border-radius: 12px; padding: 18px 20px; }
+[data-theme="gnome"] .card h2 { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.01em; }
+[data-theme="gnome"] .card .ver { color: var(--dim); font-weight: 400; font-size: .9rem; }
+[data-theme="gnome"] .card p.desc { color: var(--dim); }
+[data-theme="gnome"] .grid { gap: 18px; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
+
+[data-theme="gnome"] input, [data-theme="gnome"] select { background: var(--entry); border: 0; border-radius: 6px; padding: 8px 10px; color: var(--fg); }
+[data-theme="gnome"] input:focus, [data-theme="gnome"] select:focus { outline: 2px solid color-mix(in srgb, var(--accent-bg) 50%, transparent); outline-offset: -2px; }
+[data-theme="gnome"] select option { background: var(--view); color: var(--fg); }
+[data-theme="gnome"] label > span { color: var(--dim); font-size: .85rem; font-weight: 600; }
+
+/* Games: Adwaita boxed lists with headings */
+[data-theme="gnome"] .group h3 { text-transform: none; letter-spacing: 0; font-size: .95rem; font-weight: 700; color: var(--fg); margin: 24px 2px 10px; }
+[data-theme="gnome"] .gamerow { background: var(--card); border: 0; border-radius: 0; margin: 0; padding: 12px 14px; min-height: 52px;
+  box-shadow: none; border-top: 1px solid var(--sep); }
+[data-theme="gnome"] .group { border-radius: 12px; }
+[data-theme="gnome"] .group div.gamerow:first-of-type { border-top: 0; border-radius: 12px 12px 0 0; }
+[data-theme="gnome"] .group div.gamerow:last-of-type { border-radius: 0 0 12px 12px; }
+[data-theme="gnome"] .group div.gamerow:only-of-type { border-radius: 12px; }
+[data-theme="gnome"] #games .group { filter: drop-shadow(0 1px 2px rgba(0,0,6,.08)); }
+[data-theme="gnome"] .gamerow .t { font-weight: 600; }
+[data-theme="gnome"] .gamerow .p { color: var(--dim); }
+
+[data-theme="gnome"] .badge { background: var(--btn); color: var(--fg); font-weight: 600; font-size: .72rem; padding: 2px 9px; }
+[data-theme="gnome"] .badge.proton, [data-theme="gnome"] .badge.wine { background: color-mix(in srgb, #9141ac 22%, transparent); }
+[data-theme="gnome"] .badge.emulator { background: color-mix(in srgb, var(--accent-bg) 22%, transparent); }
+[data-theme="gnome"] .badge.device { background: color-mix(in srgb, #26a269 22%, transparent); }
+[data-theme="gnome"] .badge.installed { background: var(--success); color: #fff; }
+[data-theme="gnome"] .dot.ok { background: var(--success); }
+[data-theme="gnome"] .dot.no { background: var(--destructive); }
+[data-theme="gnome"] .progress { background: var(--btn); height: 4px; }
+[data-theme="gnome"] .progress > div { background: var(--accent-bg); }
+
+[data-theme="gnome"] .drop { border: 2px dashed var(--sep); border-radius: 12px; color: var(--dim); background: var(--entry); }
+[data-theme="gnome"] .drop.over { border-color: var(--accent-bg); color: var(--fg); }
+[data-theme="gnome"] .log { background: var(--view); border: 0; box-shadow: var(--card-shadow); border-radius: 12px;
+  font-family: "Adwaita Mono", "Source Code Pro", monospace; font-size: .85rem; }
+[data-theme="gnome"] .empty { color: var(--dim); }
+[data-theme="gnome"] code { font-family: "Adwaita Mono", "Source Code Pro", monospace; }
+/* toast, as AdwToast */
+[data-theme="gnome"] #toast { background: color-mix(in srgb, var(--headerbar) 30%, #303030); color: #fff; border-radius: 9999px;
+  padding: 10px 22px; box-shadow: 0 2px 8px rgba(0,0,6,.3); font-weight: 600; }
+[data-theme="gnome"] #toast.bad { background: var(--destructive); }
+[data-theme="gnome"] footer { color: var(--dim); }
+[data-theme="gnome"] select { appearance: none; -webkit-appearance: none; padding-right: 34px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--dim) 50%), linear-gradient(135deg, var(--dim) 50%, transparent 50%);
+  background-position: calc(100% - 17px) 55%, calc(100% - 12px) 55%; background-size: 5px 5px; background-repeat: no-repeat; }
+details.fit { margin: 0 0 12px; font-size: .88rem; }
+details.fit summary { cursor: pointer; list-style: none; }
+details.fit summary::-webkit-details-marker { display: none; }
+details.fit ul { margin: 8px 0 0; padding-left: 18px; color: var(--muted); display: grid; gap: 4px; }
+details.fit li.advice { color: var(--warn); }
+.badge.fit-adjusted { background: color-mix(in srgb, var(--accent2) 22%, transparent); }
+.badge.fit-warning { background: color-mix(in srgb, #e5a50a 30%, transparent); }
+.badge.fit-blocked { background: var(--bad); color: #fff; }
+
+/* ---- Discover ---------------------------------------------------------------------- */
+.hero { position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 21 / 8; min-height: 260px;
+        background: var(--panel); box-shadow: var(--shadow); }
+.slide { position: absolute; inset: 0; opacity: 0; transition: opacity .5s ease; pointer-events: none; }
+.slide.active { opacity: 1; pointer-events: auto; }
+.slide-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.slide-bg.fallback { background: linear-gradient(135deg, var(--accent2), var(--accent)); }
+.slide-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.72) 0%, rgba(0,0,0,.35) 45%, rgba(0,0,0,0) 75%); }
+.slide-body { position: absolute; left: 6%; bottom: 12%; right: 30%; color: #fff; }
+.slide-body h2 { font-size: clamp(1.8rem, 4.5vw, 3.2rem); margin: 10px 0 2px; letter-spacing: -.02em; font-weight: 800; }
+.slide-body .by { margin: 0 0 18px; opacity: .8; }
+.hero-icons { display: flex; align-items: center; gap: 10px; }
+.hero-icon { width: 52px; height: 52px; border-radius: 12px; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,.4); }
+.hero-icon.initials { display: grid; place-items: center; background: rgba(255,255,255,.18); font-weight: 800; color: #fff; }
+.plus { font-size: 1.4rem; font-weight: 700; opacity: .85; }
+button.pill.big, [data-theme="gnome"] button.pill.big { border-radius: 9999px; padding: 12px 34px; font-size: 1.05rem;
+  background: var(--accent2); color: #fff; }
+[data-theme="gnome"] button.pill.big { background: var(--accent-bg); }
+.hero-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 42px; height: 42px; border-radius: 50%;
+  padding: 0; font-size: 1.6rem; line-height: 1; background: rgba(0,0,0,.45) !important; color: #fff !important; }
+.hero-nav.prev { left: 14px; } .hero-nav.next { right: 14px; }
+.dots { position: absolute; right: 22px; bottom: 18px; display: flex; gap: 8px; }
+.dots button { width: 8px; height: 8px; padding: 0; border-radius: 9999px; background: rgba(255,255,255,.45) !important; }
+.dots button.on { width: 26px; background: #fff !important; }
+.hero-empty { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 8px; padding: 20px; }
+.hero-empty h2 { margin: 0; font-size: 2rem; }
+.row-title { font-size: 1.35rem; font-weight: 800; margin: 28px 2px 12px; }
+.shelf { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(260px, 340px); justify-content: start; gap: 16px; overflow-x: auto;
+         padding-bottom: 6px; scroll-snap-type: x mandatory; }
+.shelf.tall { grid-auto-columns: 150px; }
+.tile { position: relative; padding: 0; border-radius: 14px; overflow: hidden; aspect-ratio: 16 / 9; text-align: left;
+        background: var(--panel) !important; box-shadow: var(--shadow); scroll-snap-align: start; }
+.tile img, .tile-fallback { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tile-fallback { background: linear-gradient(135deg, var(--accent2), var(--accent)); }
+.tile .chip { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,.6); color: #fff; font-size: .75rem;
+              font-weight: 700; padding: 3px 10px; border-radius: 9999px; }
+.tile .tile-title { position: absolute; left: 0; right: 0; bottom: 0; padding: 26px 12px 10px; color: #fff; font-weight: 800;
+                    background: linear-gradient(transparent, rgba(0,0,0,.7)); }
+.tile:hover img { transform: scale(1.03); transition: transform .25s; }
+.capsule { position: relative; aspect-ratio: 2 / 3; border-radius: 12px; overflow: hidden; background: var(--panel);
+           box-shadow: var(--shadow); scroll-snap-align: start; }
+.capsule img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.capsule-fallback { height: 100%; display: grid; place-items: center; padding: 10px; text-align: center; font-weight: 700; }
+.capsule-badge { position: absolute; bottom: 8px; left: 8px; background: rgba(0,0,0,.6); color: #fff; font-size: .7rem;
+                 font-weight: 700; padding: 2px 8px; border-radius: 9999px; }
+@media (max-width: 640px) { .slide-body { right: 6%; } .hero { aspect-ratio: auto; min-height: 320px; } }
+[data-theme="gnome"] .tile, .tile { padding: 0 !important; }
+.catalog-tile { cursor: default; }
+.tile-title { display: grid; gap: 2px; }
+.tile-sub { font-weight: 500; font-size: .8rem; opacity: .85; }
+.tile-actions { display: flex; gap: 10px; align-items: center; margin-top: 6px; }
+.tile-actions .pill { padding: 5px 16px !important; border-radius: 9999px; font-size: .85rem; }
+.linkout { color: #fff; font-size: .85rem; font-weight: 600; opacity: .9; }

@@ -1,0 +1,11 @@
+{
+  "sheet": "enemy_rules",
+  "about": "Which Brotato enemies get a Hue colour. First matching row wins. match is checked in code: boss (script is Boss), loot (enemy.is_loot), charmed (charmed effect active), default (everything else).",
+  "columns": ["id", "match", "coloured", "outline", "note"],
+  "rows": [
+    {"id": "rule_boss",    "match": "boss",    "coloured": false, "outline": false, "note": "Bosses and elites stay like Hue's black objects: always solid"},
+    {"id": "rule_loot",    "match": "loot",    "coloured": false, "outline": false, "note": "Loot aliens are never hidden, so they stay catchable"},
+    {"id": "rule_charmed", "match": "charmed", "coloured": false, "outline": false, "note": "Charmed enemies fight for you and lose their colour"},
+    {"id": "rule_default", "match": "default", "coloured": true,  "outline": true,  "note": "Every other enemy gets one of Hue's owned colours"}
+  ]
+}

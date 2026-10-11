@@ -1,0 +1,11 @@
+{
+  "sheet": "input",
+  "about": "InputMap actions the mod adds at runtime. Keys are Godot 3 scancodes, mouse buttons are BUTTON_* indices, joy buttons are JOY_* indices (Xbox layout). Brotato uses E/F/R and the bumpers only in menus, so they are free during waves.",
+  "columns": ["id", "keys", "mouse_buttons", "joy_buttons", "label_key"],
+  "rows": [
+    {"id": "hue_wheel_hold", "keys": ["KEY_SPACE", "KEY_SHIFT"], "mouse_buttons": ["BUTTON_RIGHT"],     "joy_buttons": ["JOY_L2", "JOY_R2"], "label_key": "HUE_INPUT_WHEEL"},
+    {"id": "hue_next",       "keys": ["KEY_E"],                  "mouse_buttons": ["BUTTON_WHEEL_DOWN"], "joy_buttons": ["JOY_R"],           "label_key": "HUE_INPUT_NEXT"},
+    {"id": "hue_prev",       "keys": ["KEY_Q"],                  "mouse_buttons": ["BUTTON_WHEEL_UP"],   "joy_buttons": ["JOY_L"],           "label_key": "HUE_INPUT_PREV"},
+    {"id": "hue_grey",       "keys": ["KEY_G"],                  "mouse_buttons": ["BUTTON_MIDDLE"],     "joy_buttons": ["JOY_L3"],          "label_key": "HUE_INPUT_GREY"}
+  ]
+}

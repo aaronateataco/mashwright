@@ -1,0 +1,13 @@
+{
+  "sheet": "package",
+  "about": "What ships, in which Melty component, where Melty puts it, and whose it is. No Hue or Brotato files ever ship. source is relative to the HuePotato folder.",
+  "columns": ["id", "component", "archive_path", "source", "installs_to", "license", "credit"],
+  "rows": [
+    {"id": "pkg_mod",        "component": "main",  "archive_path": "HueBrotato-HuePotato.zip (holds mods-unpacked/HueBrotato-HuePotato/)", "source": "mod/mods-unpacked/HueBrotato-HuePotato/", "installs_to": "{game}/mods/HueBrotato-HuePotato.zip", "license": "MIT", "credit": "the publisher's Melty account name"},
+    {"id": "pkg_override",   "component": "boot",  "archive_path": "override.cfg",           "source": "boot/override.cfg",           "installs_to": "{game}/override.cfg",              "license": "MIT", "credit": "the publisher's Melty account name"},
+    {"id": "pkg_boot",       "component": "boot",  "archive_path": "mods/huepotato_boot.gd", "source": "boot/huepotato_boot.gd",      "installs_to": "{game}/mods/huepotato_boot.gd",    "license": "MIT", "credit": "the publisher's Melty account name"},
+    {"id": "pkg_vgmstream",  "component": "tools", "archive_path": "huepotato-vgmstream/",   "source": "_vendor/vgmstream-r2117-win64/", "installs_to": "{game}/mods/huepotato-vgmstream/", "license": "ISC (vgmstream) + LGPL-2.1 (FFmpeg, mpg123) + BSD (libvorbis, speex, celt) + MIT (libatrac9)", "credit": "vgmstream r2117 by bnnm and contributors, https://github.com/vgmstream/vgmstream"},
+    {"id": "pkg_readme",     "component": "main",  "archive_path": "HueBrotato-HuePotato.zip: mods-unpacked/HueBrotato-HuePotato/README.md", "source": "README.md", "installs_to": "{game}/mods/HueBrotato-HuePotato.zip", "license": "MIT", "credit": "the publisher's Melty account name"},
+    {"id": "pkg_thirdparty", "component": "tools", "archive_path": "huepotato-vgmstream/THIRD_PARTY.txt", "source": "THIRD_PARTY.txt", "installs_to": "{game}/mods/huepotato-vgmstream/", "license": "text", "credit": "Licence notices for bundled tools"}
+  ]
+}

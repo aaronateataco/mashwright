@@ -1,0 +1,37 @@
+{
+  "sheet": "effects",
+  "about": "Brotato Effect resources built at runtime. kind=stat uses a Brotato stat key (checked against keys.gd). kind=text shows a line only (key empty) and the rule itself is code driven by the synergies/tuning sheets.",
+  "columns": ["id", "owner", "kind", "key", "value", "text_key", "effect_sign"],
+  "rows": [
+    {"id": "eff_char_wheel",     "owner": "hue_potato", "kind": "text", "key": "none", "value": 0,   "text_key": "HUE_EFFECT_WHEEL",     "effect_sign": "NEUTRAL"},
+    {"id": "eff_char_fragments", "owner": "hue_potato", "kind": "text", "key": "none", "value": 0,   "text_key": "HUE_EFFECT_FRAGMENTS", "effect_sign": "NEUTRAL"},
+    {"id": "eff_char_letters",   "owner": "hue_potato", "kind": "text", "key": "none", "value": 0,   "text_key": "HUE_EFFECT_LETTERS",   "effect_sign": "NEUTRAL"},
+    {"id": "eff_char_speed",     "owner": "hue_potato", "kind": "stat", "key": "stat_speed",          "value": 10,  "text_key": "none", "effect_sign": "FROM_VALUE"},
+    {"id": "eff_char_dodge",     "owner": "hue_potato", "kind": "stat", "key": "stat_dodge",          "value": 5,   "text_key": "none", "effect_sign": "FROM_VALUE"},
+    {"id": "eff_char_damage",    "owner": "hue_potato", "kind": "stat", "key": "stat_percent_damage", "value": -15, "text_key": "none", "effect_sign": "FROM_VALUE"},
+
+    {"id": "eff_letter_hp",      "owner": "item_mums_letter", "kind": "stat", "key": "stat_max_hp",          "value": 5,  "text_key": "none", "effect_sign": "FROM_VALUE"},
+    {"id": "eff_letter_regen",   "owner": "item_mums_letter", "kind": "stat", "key": "stat_hp_regeneration", "value": 2,  "text_key": "none", "effect_sign": "FROM_VALUE"},
+    {"id": "eff_letter_syn",     "owner": "item_mums_letter", "kind": "text", "key": "none",                 "value": 0,  "text_key": "HUE_SYN_LETTER", "effect_sign": "NEUTRAL"},
+
+    {"id": "eff_beaker_xp",      "owner": "item_hue_beaker", "kind": "stat", "key": "xp_gain",               "value": 10, "text_key": "none", "effect_sign": "FROM_VALUE"},
+    {"id": "eff_beaker_elem",    "owner": "item_hue_beaker", "kind": "stat", "key": "stat_elemental_damage", "value": 2,  "text_key": "none", "effect_sign": "FROM_VALUE"},
+    {"id": "eff_beaker_syn",     "owner": "item_hue_beaker", "kind": "text", "key": "none",                  "value": 0,  "text_key": "HUE_SYN_BEAKER", "effect_sign": "NEUTRAL"},
+
+    {"id": "eff_goggles_crit",   "owner": "item_dr_grey_goggles", "kind": "stat", "key": "stat_crit_chance", "value": 5,  "text_key": "none", "effect_sign": "FROM_VALUE"},
+    {"id": "eff_goggles_range",  "owner": "item_dr_grey_goggles", "kind": "stat", "key": "stat_range",       "value": 20, "text_key": "none", "effect_sign": "FROM_VALUE"},
+    {"id": "eff_goggles_dodge",  "owner": "item_dr_grey_goggles", "kind": "stat", "key": "stat_dodge",       "value": -3, "text_key": "none", "effect_sign": "FROM_VALUE"},
+
+    {"id": "eff_butterfly_dodge","owner": "item_hue_butterfly", "kind": "stat", "key": "stat_dodge", "value": 6, "text_key": "none", "effect_sign": "FROM_VALUE"},
+    {"id": "eff_butterfly_speed","owner": "item_hue_butterfly", "kind": "stat", "key": "stat_speed", "value": 4, "text_key": "none", "effect_sign": "FROM_VALUE"},
+    {"id": "eff_butterfly_hp",   "owner": "item_hue_butterfly", "kind": "stat", "key": "stat_max_hp","value": -2,"text_key": "none", "effect_sign": "FROM_VALUE"},
+
+    {"id": "eff_lantern_luck",   "owner": "item_hue_lantern", "kind": "stat", "key": "stat_luck",       "value": 8,  "text_key": "none", "effect_sign": "FROM_VALUE"},
+    {"id": "eff_lantern_harvest","owner": "item_hue_lantern", "kind": "stat", "key": "stat_harvesting", "value": 5,  "text_key": "none", "effect_sign": "FROM_VALUE"},
+    {"id": "eff_lantern_syn",    "owner": "item_hue_lantern", "kind": "text", "key": "none",            "value": 0,  "text_key": "HUE_SYN_LANTERN", "effect_sign": "NEUTRAL"},
+
+    {"id": "eff_ring_armor",     "owner": "item_hue_life_ring", "kind": "stat", "key": "stat_armor", "value": 3,  "text_key": "none", "effect_sign": "FROM_VALUE"},
+    {"id": "eff_ring_speed",     "owner": "item_hue_life_ring", "kind": "stat", "key": "stat_speed", "value": -2, "text_key": "none", "effect_sign": "FROM_VALUE"},
+    {"id": "eff_ring_syn",       "owner": "item_hue_life_ring", "kind": "text", "key": "none",       "value": 0,  "text_key": "HUE_SYN_RING", "effect_sign": "NEUTRAL"}
+  ]
+}

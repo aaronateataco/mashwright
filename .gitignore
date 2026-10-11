@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+*.mashwright
+!examples/**/*.mashwright.json
+mashups/*/build/
+mashups/*/_vendor/
+mashups/*/tests/test_project/entities/
+mashups/*/tests/test_project/.import/
+mashups/*/tests/test_project/mods-unpacked

@@ -1,0 +1,9 @@
+config_version=4
+
+[application]
+
+config/name="HuePotatoTests"
+
+[autoload]
+
+ModLoaderLog="*res://mod_loader_log_stub.gd"

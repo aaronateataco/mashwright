@@ -1,0 +1,15 @@
+{
+  "sheet": "options",
+  "about": "Player options read from [options] in %APPDATA%\\Brotato\\huepotato.cfg (Brotato's user folder). Defaults apply when the file or key is missing. They let players running other music, item or visual mods turn the matching Hue Potato part off.",
+  "columns": ["id", "default", "description"],
+  "rows": [
+    {"id": "hue_music",           "default": true,  "description": "Play Hue's region music during Hue Potato runs (off: Brotato's or another mod's music keeps playing)"},
+    {"id": "mum_letters",         "default": true,  "description": "Play Mum's voice letters with subtitles"},
+    {"id": "hue_items_in_shop",   "default": true,  "description": "Add the six Hue items to Brotato's shop pool"},
+    {"id": "colourblind_symbols", "default": false, "description": "Show Hue's colourblind symbol over each coloured enemy"},
+    {"id": "switch_wave",         "default": true,  "description": "Show the colour wave that sweeps out from Hue Potato when the colour changes"},
+    {"id": "hue_hazards", "default": true, "description": "Hue's laser gates and skull boulders appear in later waves (off: no hazards)"},
+    {"id": "hue_crates", "default": true, "description": "Brotato's trees become Hue's coloured crates in Hue Potato runs"},
+    {"id": "hue_dust", "default": true, "description": "Hue's dust motes float over the arena"}
+  ]
+}

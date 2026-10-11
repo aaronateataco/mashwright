@@ -1,0 +1,15 @@
+{
+  "sheet": "regions",
+  "about": "A Brotato run travels through Hue's world. Each region covers a span of waves and brings Hue's map icon and music for it. Waves past 20 (endless) cycle from the first row.",
+  "columns": ["id", "wave_from", "wave_to", "icon", "music", "name_key", "floor_mix"],
+  "rows": [
+    {"id": "village",    "wave_from": 1,  "wave_to": 2,  "icon": "spr_region_village",    "music": "mus_village",    "name_key": "HUE_REGION_VILLAGE",    "floor_mix": 0.45},
+    {"id": "water",      "wave_from": 3,  "wave_to": 4,  "icon": "spr_region_water",      "music": "mus_water",      "name_key": "HUE_REGION_WATER",      "floor_mix": 0.45},
+    {"id": "fire",       "wave_from": 5,  "wave_to": 6,  "icon": "spr_region_fire",       "music": "mus_fire",       "name_key": "HUE_REGION_FIRE",       "floor_mix": 0.5},
+    {"id": "temple",     "wave_from": 7,  "wave_to": 8,  "icon": "spr_region_temple",     "music": "mus_temple",     "name_key": "HUE_REGION_TEMPLE",     "floor_mix": 0.5},
+    {"id": "mountains",  "wave_from": 9,  "wave_to": 10, "icon": "spr_region_caves",      "music": "mus_mountain",   "name_key": "HUE_REGION_MOUNTAINS",  "floor_mix": 0.5},
+    {"id": "tech",       "wave_from": 11, "wave_to": 12, "icon": "spr_region_tech",       "music": "mus_tech",       "name_key": "HUE_REGION_TECH",       "floor_mix": 0.55},
+    {"id": "university", "wave_from": 13, "wave_to": 16, "icon": "spr_region_university", "music": "mus_university", "name_key": "HUE_REGION_UNIVERSITY", "floor_mix": 0.55},
+    {"id": "island",     "wave_from": 17, "wave_to": 20, "icon": "spr_region_island",     "music": "mus_finale",     "name_key": "HUE_REGION_ISLAND",     "floor_mix": 0.6}
+  ]
+}

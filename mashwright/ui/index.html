@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mashwright</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<meta name="mashwright-token" content="__MASHWRIGHT_TOKEN__">
+<meta name="mashwright-theme" content="__MASHWRIGHT_THEME__">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><img src="icon.svg" alt="" width="32" height="32"><span>Mashwright</span></div>
+  <nav role="tablist" aria-label="Sections">
+    <button role="tab" aria-selected="true" data-tab="discover" id="tab-discover">Discover</button>
+    <button role="tab" aria-selected="false" data-tab="mashups" id="tab-mashups">Library</button>
+    <button role="tab" aria-selected="false" data-tab="games" id="tab-games">Games</button>
+    <button role="tab" aria-selected="false" data-tab="add" id="tab-add">Add</button>
+    <button role="tab" aria-selected="false" data-tab="log" id="tab-log">Log</button>
+  </nav>
+  <button class="ghost" id="rescan" title="Look for games again">Rescan</button>
+</header>
+
+<main>
+  <section id="panel-discover" role="tabpanel" aria-labelledby="tab-discover">
+    <div id="hero" class="hero" aria-roledescription="carousel" aria-label="Featured mashups"></div>
+    <h2 class="row-title">Your mashups</h2>
+    <div id="shelf-mashups" class="shelf"></div>
+    <h2 class="row-title">From the catalog</h2>
+    <div id="shelf-catalog" class="shelf"></div>
+    <h2 class="row-title">Games on this computer</h2>
+    <div id="shelf-games" class="shelf tall"></div>
+  </section>
+
+  <section id="panel-mashups" role="tabpanel" aria-labelledby="tab-mashups" hidden>
+    <div id="mashups" class="grid" aria-live="polite"></div>
+    <p class="empty" id="no-mashups" hidden>No mashups yet. Drop a <code>.mashwright</code> file on the <b>Add</b> tab.</p>
+  </section>
+
+  <section id="panel-games" role="tabpanel" aria-labelledby="tab-games" hidden>
+    <label class="search"><span class="sr">Search games</span><input id="game-search" type="search" placeholder="Search games"></label>
+    <div id="games"></div>
+  </section>
+
+  <section id="panel-add" role="tabpanel" aria-labelledby="tab-add" hidden>
+    <div class="cards2">
+      <div class="card">
+        <h2>Import a mashup</h2>
+        <div id="drop" class="drop" tabindex="0" role="button" aria-label="Choose a .mashwright file">
+          <p>Drop a <code>.mashwright</code> file here, or click to choose one.</p>
+          <input type="file" id="file" accept=".mashwright,.zip" hidden>
+        </div>
+        <form id="import-path" class="row">
+          <label class="grow"><span>…or a file/folder path on this computer</span><input name="path" required placeholder="/home/me/Downloads/hue-potato.mashwright"></label>
+          <button type="submit">Import</button>
+        </form>
+      </div>
+      <div class="card">
+        <h2>Add a game folder</h2>
+        <p class="muted">For games Mashwright didn't find on its own (DRM-free copies, other launchers).</p>
+        <form id="custom" class="stack">
+          <label><span>Title</span><input name="title" required></label>
+          <label><span>Game folder</span><input name="install_dir" required placeholder="/home/me/Games/MyGame"></label>
+          <label><span>Platform</span><select name="platform"><option value="">This computer's</option><option>windows</option><option>linux</option><option>macos</option></select></label>
+          <label><span>Executable (optional)</span><input name="exe" placeholder="Game.x86_64"></label>
+          <button type="submit">Add game</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="panel-log" role="tabpanel" aria-labelledby="tab-log" hidden>
+    <pre id="log" class="log" aria-live="polite"></pre>
+  </section>
+</main>
+
+<div id="toast" role="status" aria-live="polite" hidden></div>
+<footer>Mashwright <span id="version"></span> · open source (MIT) · inspired by Melty, not affiliated</footer>
+<script src="app.js"></script>
+</body>
+</html>

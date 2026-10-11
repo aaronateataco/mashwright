@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Mashwright
+GenericName=Mashup Launcher
+Comment=Install, play and remove game mashups and mods
+Exec=@BIN@/mashwright
+Icon=io.github.mashwright.Mashwright
+StartupWMClass=io.github.mashwright.Mashwright
+Terminal=false
+Categories=Game;
+Keywords=mods;mashup;launcher;steam;proton;

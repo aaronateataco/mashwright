@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "mode": "installed",
+  "games": [
+    {"slug": "brotato", "role": "primary", "version": ">=1.1.15"},
+    {"slug": "custom-hue", "role": "secondary"}
+  ],
+  "components": [
+    {"id": "main", "fileName": "HuePotato-Mod.zip", "label": "Hue Potato mod", "kind": "main", "required": true},
+    {"id": "boot", "fileName": "HuePotato-Boot.zip", "label": "Boot script for the built-in mod loader", "kind": "extra", "required": true},
+    {"id": "tools", "fileName": "HuePotato-vgmstream.zip", "label": "vgmstream audio decoder", "kind": "extra", "required": true}
+  ],
+  "requirements": [],
+  "mappings": [
+    {"component": "main", "from": "", "to": "{game}/mods"},
+    {"component": "boot", "from": "", "to": "{game}"},
+    {"component": "tools", "from": "", "to": "{game}/mods"}
+  ],
+  "launch": {"kind": "game"},
+  "runtimeData": ["{appdata}/Brotato/huepotato"],
+  "notes": {
+    "firstLaunch": "Pick Hue Potato on Brotato's character select. Hold Right Click, Space or a trigger for Hue's colour wheel; Q/E switch colours, G goes back to grey. Needs Hue installed: the mod reads Hue's art, music and Mum's letters from your copy."
+  }
+}

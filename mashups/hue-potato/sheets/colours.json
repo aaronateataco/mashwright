@@ -1,0 +1,15 @@
+{
+  "sheet": "colours",
+  "about": "Hue's eight colours. rgb is HueColour.GenerateHashTable() in Hue's Assembly-CSharp. wheel_index follows Hue's HueColorNames order (the XXX entries are unused in Hue). unlock_order follows the numbering of Mum's voice letters (2-VO-Aqua ... 13-VO-Lime).",
+  "columns": ["id", "hue_name", "rgb", "wheel_index", "unlock_order", "unlock_wave", "symbol", "chime", "letter_vo", "letter_text_key", "letter_lines", "name_key"],
+  "rows": [
+    {"id": "lime",   "hue_name": "Lime",   "rgb": [145, 235, 0],   "wheel_index": 0, "unlock_order": 8, "unlock_wave": 13, "symbol": "spr_sym_lime",   "chime": "snd_wheel_1", "letter_vo": "vo_lime",   "letter_text_key": "VO/Lime",   "letter_lines": 9,  "name_key": "HUE_COLOUR_LIME"},
+    {"id": "aqua",   "hue_name": "Aqua",   "rgb": [0, 177, 233],   "wheel_index": 1, "unlock_order": 1, "unlock_wave": 0,  "symbol": "spr_sym_aqua",   "chime": "snd_wheel_2", "letter_vo": "vo_aqua",   "letter_text_key": "VO/Aqua",   "letter_lines": 6,  "name_key": "HUE_COLOUR_AQUA"},
+    {"id": "blue",   "hue_name": "Blue",   "rgb": [38, 49, 255],   "wheel_index": 2, "unlock_order": 6, "unlock_wave": 9,  "symbol": "spr_sym_blue",   "chime": "snd_wheel_3", "letter_vo": "vo_blue",   "letter_text_key": "VO/Blue",   "letter_lines": 5,  "name_key": "HUE_COLOUR_BLUE"},
+    {"id": "purple", "hue_name": "Purple", "rgb": [172, 0, 255],   "wheel_index": 3, "unlock_order": 2, "unlock_wave": 0,  "symbol": "spr_sym_purple", "chime": "snd_wheel_4", "letter_vo": "vo_purple", "letter_text_key": "VO/Purple", "letter_lines": 10, "name_key": "HUE_COLOUR_PURPLE"},
+    {"id": "pink",   "hue_name": "Pink",   "rgb": [244, 59, 166],  "wheel_index": 4, "unlock_order": 4, "unlock_wave": 5,  "symbol": "spr_sym_pink",   "chime": "snd_wheel_5", "letter_vo": "vo_pink",   "letter_text_key": "VO/Pink",   "letter_lines": 5,  "name_key": "HUE_COLOUR_PINK"},
+    {"id": "red",    "hue_name": "Red",    "rgb": [255, 20, 27],   "wheel_index": 5, "unlock_order": 5, "unlock_wave": 7,  "symbol": "spr_sym_red",    "chime": "snd_wheel_6", "letter_vo": "vo_red",    "letter_text_key": "VO/Red",    "letter_lines": 7,  "name_key": "HUE_COLOUR_RED"},
+    {"id": "orange", "hue_name": "Orange", "rgb": [255, 138, 0],   "wheel_index": 6, "unlock_order": 3, "unlock_wave": 3,  "symbol": "spr_sym_orange", "chime": "snd_wheel_7", "letter_vo": "vo_orange", "letter_text_key": "VO/Orange", "letter_lines": 9,  "name_key": "HUE_COLOUR_ORANGE"},
+    {"id": "yellow", "hue_name": "Yellow", "rgb": [255, 205, 0],   "wheel_index": 7, "unlock_order": 7, "unlock_wave": 11, "symbol": "spr_sym_yellow", "chime": "snd_wheel_8", "letter_vo": "vo_yellow", "letter_text_key": "VO/Yellow", "letter_lines": 6,  "name_key": "HUE_COLOUR_YELLOW"}
+  ]
+}
