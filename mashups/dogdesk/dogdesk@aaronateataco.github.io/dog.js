@@ -46,7 +46,7 @@ export class Dog {
         this._settings = settings;
         this._playSound = playSound;
         this.actor = new St.Widget({reactive: true, track_hover: true, name: 'dogdesk-dog'});
-        Main.layoutManager.addChrome(this.actor, {trackFullscreen: true});
+        Main.layoutManager.addTopChrome(this.actor, {trackFullscreen: true});
         this.actor.connect('button-press-event', () => {
             this.pet();
             return Clutter.EVENT_STOP;
@@ -54,7 +54,7 @@ export class Dog {
         this._box = new TextBox(font, dir);
         this._bubble = this._box.actor;
         this._bubbleShown = false;
-        Main.layoutManager.addChrome(this._bubble, {trackFullscreen: true});
+        Main.layoutManager.addTopChrome(this._bubble, {trackFullscreen: true});
 
         const wa = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
         this.x = wa.x + wa.width * (0.2 + Math.random() * 0.6);
@@ -82,8 +82,14 @@ export class Dog {
         this._setSprite('emerge', 0);
         this._pointerMovedAt = this._now();
         this._tickCount = 0;
-        // Out of the way in the Activities overview.
-        Main.overview.connectObject('showing', () => this._setHidden(true), 'hidden', () => this._setHidden(false), this);
+        // In the Activities overview the windows move about, so the dog stays put and watches.
+        this._paused = false;
+        Main.overview.connectObject('showing', () => {
+            this._paused = true;
+        }, 'hidden', () => {
+            this._paused = false;
+            this._surfCache = null;
+        }, this);
         // A new workspace: the dog digs over to it (popping up somewhere sensible there).
         global.workspace_manager.connectObject('active-workspace-changed', () => {
             this._surfCache = null;
@@ -237,6 +243,11 @@ export class Dog {
     // ---- behaviour ---------------------------------------------------------------------------
 
     _tick(dt) {
+        if (this._paused) {
+            if (this.state !== 'sleep')
+                this._setSprite('talk', 0);
+            return;
+        }
         // Asleep it barely moves: think five times less often.
         this._tickCount++;
         if (this.state === 'sleep' && this._tickCount % 5)
@@ -563,7 +574,7 @@ export class Dog {
         const actor = new St.Widget({width: info.w, height: info.h, reactive: false});
         const file = GLib.build_filenamev([this._dir, `${SPRITES.treat}_0.png`]);
         actor.set_style(`background-image: url("file://${file}"); background-size: ${info.w}px ${info.h}px;`);
-        Main.layoutManager.addChrome(actor, {trackFullscreen: true});
+        Main.layoutManager.addTopChrome(actor, {trackFullscreen: true});
         const treat = {actor, x, y: mon.y + Main.panel.height + info.h, vy: 0, landed: false, info};
         actor.set_position(Math.round(treat.x - info.w / 2), Math.round(treat.y - info.h));
         this._treat = treat;

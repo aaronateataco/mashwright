@@ -13,7 +13,7 @@ A desktop pet for GNOME: the small white dog from **your own copy of Undertale**
   it over, let it nap, chatty, sounds, preferences.
 - Talks in Undertale's own text box: its dialogue font, read from your copy, typed out letter by
   letter with the text blip (sounds on). Remembers where it was when you log back in.
-- Lives on any of your monitors; follows you to a new workspace; hides in the Activities overview.
+- Lives on any of your monitors; follows you to a new workspace; stays with you in the Activities overview (it sits and watches).
 - Stays still while you're typing or watching something (keyboard busy, pointer still), and is
   sleepier late at night. In winter a long nap turns it into a little snow pile.
 - Never covers fullscreen apps or games; text boxes can be turned off; sounds are off by default.
