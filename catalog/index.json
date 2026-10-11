@@ -5,7 +5,7 @@
     {
       "id": "dogdesk",
       "title": "DogDesk",
-      "version": "0.3.0",
+      "version": "0.3.1",
       "authors": [
         "aaronateataco"
       ],
@@ -16,9 +16,9 @@
           "title": "Undertale"
         }
       ],
-      "package_url": "https://github.com/aaronateataco/mashwright/releases/download/v0.4.0/dogdesk.mashwright",
-      "sha256": "69dae616abab80d8888ede4ceea4f651a51e205c02fd65c3130fcb3107f4a2d4",
-      "size": 913471,
+      "package_url": "https://github.com/aaronateataco/mashwright/releases/download/v0.4.1/dogdesk.mashwright",
+      "sha256": "52ec6074ff51a13ccbd47c5f13a9fa706e19eec89ef1184e6bd2c8df8858facc",
+      "size": 913503,
       "cover_url": "https://raw.githubusercontent.com/aaronateataco/mashwright/main/mashups/dogdesk/package/cover.png",
       "homepage": "https://github.com/aaronateataco/mashwright/tree/main/mashups/dogdesk"
     },
