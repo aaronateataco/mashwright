@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.dogdesk" path="/org/gnome/shell/extensions/dogdesk/">
+    <key name="scale" type="i"><range min="1" max="4"/><default>2</default>
+      <summary>Size of the dog (pixel scale)</summary></key>
+    <key name="chatty" type="b"><default>true</default>
+      <summary>Show the dog's little text boxes</summary></key>
+    <key name="sounds" type="b"><default>false</default>
+      <summary>Play Undertale's dog jingle when you pet it</summary></key>
+    <key name="hidden" type="b"><default>false</default>
+      <summary>Hide the dog</summary></key>
+    <key name="idle-sleep-minutes" type="i"><range min="1" max="60"/><default>3</default>
+      <summary>Minutes away before the dog naps</summary></key>
+    <key name="data-path" type="s"><default>''</default>
+      <summary>Undertale data file (game.unx / data.win / game.ios), if not found automatically</summary></key>
+  </schema>
+</schemalist>

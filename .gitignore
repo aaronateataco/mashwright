@@ -7,3 +7,4 @@ mashups/*/_vendor/
 mashups/*/tests/test_project/entities/
 mashups/*/tests/test_project/.import/
 mashups/*/tests/test_project/mods-unpacked
+mashups/*/package/*.zip

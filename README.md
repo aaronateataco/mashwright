@@ -120,6 +120,8 @@ publish mashups you made or have permission to share.
 - `examples/hue-potato/`: Hue Potato as a Mashwright package (`make_package.py`).
 - `mashups/hue-potato/`: Hue Potato's full source (Brotato × Hue): design sheets, Godot mod,
   build tools. It contains nothing from either game; it reads Hue from the player's copy.
+- `mashups/dogdesk/`: DogDesk (GNOME × Undertale), a desktop-pet GNOME Shell extension that reads
+  the dog from the player's own Undertale.
 
 ## Making a mashup
 
@@ -139,7 +141,9 @@ A mashup is a folder (or a `.mashwright` zip of it) with `mashwright.json` and i
 - `extract: true` unzips a component (`from` picks a sub-folder); `false` copies the file itself.
 - Placeholders: `{game}`, `{game:<slug>}`, `{appdata}` (Proton-aware), `{home}`, `{data}`,
   `{proton_prefix}`, `{proton_appdata}`, `{switch_mod}`, `{android_data}`, `{android_media}`,
-  `{sdcard}`, `{ios_documents}`, `{emu_mod}`, `{emu_root}`.
+  `{sdcard}`, `{ios_documents}`, `{emu_mod}`, `{emu_root}`, `{gnome_extensions}`.
+- Desktop mashups: `"gnome_extension": "uuid"` turns the installed GNOME Shell extension on (and off
+  on uninstall); `"launch": {"kind": "desktop", "message": "..."}` for mashups with no game to start.
 - `when: {"host": "linux", "platform": "windows", "runner": "proton"}` limits a mapping.
 - `settings` writes INI values (journalled and restored), e.g. a path a mod needs.
 - Device games: give a game `"switch_title": "0100…"`, `"android_package": "com.x.y"` or

@@ -55,6 +55,8 @@ class App:
         if fit["status"] == "blocked":
             raise MashwrightError("; ".join(fit["notes"]))
         j = installer.install(r, r["_dir"], picked, self.env, backend, progress, skip=fit["skip"])
+        if r.get("gnome_extension"):
+            self._gnome_extension(r["gnome_extension"], True)
         return {"files": sum(e["op"] in ("create", "overwrite") for e in j.data["entries"])}
 
     def fit(self, r: dict, picked: Dict[str, Game]) -> dict:
@@ -103,13 +105,34 @@ class App:
         return str(p) if Path(r["_dir"]).resolve() in p.parents and p.is_file() else None
 
     def uninstall(self, mashup_id: str) -> List[str]:
+        r = library.get(self.env, mashup_id)
+        if r and r.get("gnome_extension"):
+            self._gnome_extension(r["gnome_extension"], False)
         return installer.uninstall(self.env, mashup_id)
+
+    def _gnome_extension(self, uuid: str, on: bool) -> None:
+        """Turn a desktop mashup's GNOME Shell extension on or off (GNOME's own command)."""
+        tool = self.env.which("gnome-extensions")
+        if self.env.os != "linux" or not tool:
+            return
+        code, out = self.env.run([tool, "enable" if on else "disable", uuid], 20)
+        if code != 0 and on:
+            # A brand-new extension is only seen by GNOME Shell after logging back in; ask GNOME to
+            # turn it on then, the same way the Extensions app does.
+            code2, cur = self.env.run(["gsettings", "get", "org.gnome.shell", "enabled-extensions"], 10)
+            if code2 == 0 and uuid not in cur:
+                items = [x.strip().strip("'") for x in cur.strip().lstrip("@as").strip().strip("[]").split(",") if x.strip()]
+                items.append(uuid)
+                self.env.run(["gsettings", "set", "org.gnome.shell", "enabled-extensions",
+                              "[" + ", ".join(f"'{x}'" for x in items) + "]"], 10)
 
     def launch(self, mashup_id: str) -> str:
         r = self._recipe(mashup_id)
         st = installer.status(self.env, mashup_id)
         if not st["installed"]:
             raise MashwrightError("Install it first")
+        if (r.get("launch") or {}).get("kind") == "desktop":
+            return (r.get("launch") or {}).get("message") or "It's on your desktop"
         slug = (r.get("launch") or {}).get("game") or rcp.primary_slug(r)
         key = st["games"].get(slug)
         g = self.game(key) if key else None

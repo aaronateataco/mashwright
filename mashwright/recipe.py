@@ -16,7 +16,8 @@ from .platforms import HostEnv, appdata_dir, data_dir
 RECIPE_FILE = "mashwright.json"
 PLACEHOLDER_RE = re.compile(r"\{([a-z_]+)(?::([a-z0-9-]+))?\}")
 KNOWN_PLACEHOLDERS = {"game", "appdata", "home", "data", "switch_mod", "android_data", "android_media", "sdcard",
-                      "ios_documents", "proton_prefix", "proton_appdata", "emu_root", "emu_mod"}
+                      "ios_documents", "proton_prefix", "proton_appdata", "emu_root", "emu_mod",
+                      "gnome_extensions"}
 TARGET_KEYS = {"switch_title": "switch", "android_package": "android", "ios_bundle": "ios"}
 
 
@@ -118,6 +119,9 @@ def validate(r: dict) -> List[str]:
     if cover is not None and (not isinstance(cover, str) or "/" in cover or "\\" in cover
                               or not cover.lower().endswith((".jpg", ".jpeg", ".png", ".webp"))):
         problems.append('"cover" must be an image file name in the package (jpg, png or webp)')
+    ext = r.get("gnome_extension")
+    if ext is not None and not re.fullmatch(r"[A-Za-z0-9._-]+@[A-Za-z0-9._-]+", str(ext)):
+        problems.append('"gnome_extension" must be an extension UUID like name@domain')
     launch = r.get("launch") or {}
     if launch.get("game") and launch["game"] not in slugs:
         problems.append("launch.game must be one of the recipe's games")
@@ -199,6 +203,10 @@ def context(r: dict, picked: Dict[str, Game], env: HostEnv, backend: str = "") -
     primary = picked.get(primary_slug(r))
     ctx: Dict[str, object] = {"home": env.home, "data": data_dir(env) / "mashups" / r["id"] / "data",
                               "appdata": appdata_dir(env)}
+    if env.os == "linux":
+        # Desktop mashups (GNOME Shell extensions) install per user, like GNOME's own tools do.
+        from .platforms import appdata_dir as _data_home
+        ctx["gnome_extensions"] = _data_home(env) / "gnome-shell" / "extensions"
     for slug, g in picked.items():
         if g.install_dir:
             ctx[f"game:{slug}"] = g.install_dir

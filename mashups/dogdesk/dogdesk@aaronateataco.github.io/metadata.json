@@ -1,0 +1,9 @@
+{
+  "uuid": "dogdesk@aaronateataco.github.io",
+  "name": "DogDesk",
+  "description": "A small white dog from your own copy of Undertale lives on your desktop: it trots along your window tops, naps when you're away, notices notifications, and stays out of your way. Needs Undertale installed (any store); nothing from the game is included. Not affiliated with Toby Fox.",
+  "shell-version": ["47", "48", "49", "50", "51"],
+  "url": "https://github.com/aaronateataco/mashwright/tree/main/mashups/dogdesk",
+  "settings-schema": "org.gnome.shell.extensions.dogdesk",
+  "version-name": "0.1.0"
+}

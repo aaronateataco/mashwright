@@ -1,0 +1,12 @@
+/* The dog's text box, in the spirit of Undertale's dialogue: white text in a black box. */
+.dogdesk-bubble {
+  background-color: #000;
+  color: #fff;
+  border: 3px solid #fff;
+  border-radius: 0;
+  padding: 8px 12px;
+  font-family: "DejaVu Sans Mono", "Adwaita Mono", monospace;
+  font-weight: bold;
+  font-size: 11pt;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
