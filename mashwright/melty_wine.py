@@ -221,8 +221,9 @@ def desktop_integration(env: HostEnv) -> None:
     import sys
     entry = _apps_dir(env) / f"{APP_ID}.desktop"
     entry.parent.mkdir(parents=True, exist_ok=True)
+    installed = env.which("mashwright")
     main = Path(sys.argv[0]).resolve() if sys.argv and sys.argv[0].endswith("mashwright.py") else None
-    exe = f'python3 "{main}"' if main else "mashwright"
+    exe = f'"{installed}"' if installed else (f'python3 "{main}"' if main else "mashwright")
     entry.write_text(
         "[Desktop Entry]\nType=Application\nName=Melty (via Wine)\n"
         "Comment=The official Melty app, run with Wine by Mashwright\n"
