@@ -47,8 +47,49 @@ export class Dog {
         this._playSound = playSound;
         this.actor = new St.Widget({reactive: true, track_hover: true, name: 'dogdesk-dog'});
         Main.layoutManager.addTopChrome(this.actor, {trackFullscreen: true});
-        this.actor.connect('button-press-event', () => {
-            this.pet();
+        // Click: pet. Double-click: walkies (it follows your pointer). Drag: pick it up.
+        this.actor.connect('button-press-event', (_a, event) => {
+            if (event.get_button() !== 1)
+                return Clutter.EVENT_PROPAGATE;
+            if (event.get_click_count() === 2) {
+                this.walkies();
+                return Clutter.EVENT_STOP;
+            }
+            const [x, y] = event.get_coords();
+            this._press = {x, y, dx: this.x - x, dy: this.y - y, moved: false};
+            this._grab = global.stage.grab(this.actor);
+            return Clutter.EVENT_STOP;
+        });
+        this.actor.connect('motion-event', (_a, event) => {
+            if (!this._press)
+                return Clutter.EVENT_PROPAGATE;
+            const [x, y] = event.get_coords();
+            if (!this._press.moved && Math.hypot(x - this._press.x, y - this._press.y) < 6)
+                return Clutter.EVENT_STOP;
+            if (!this._press.moved) {
+                this._press.moved = true;
+                this._setState('held');
+                this._playSound(SOUNDS.squeak);
+            }
+            this.facing = x < this._press.x ? -1 : 1;
+            this.x = x + this._press.dx;
+            this.y = y + this._press.dy;
+            this._place();
+            return Clutter.EVENT_STOP;
+        });
+        this.actor.connect('button-release-event', () => {
+            if (!this._press)
+                return Clutter.EVENT_PROPAGATE;
+            const moved = this._press.moved;
+            this._press = null;
+            this._grab?.dismiss();
+            this._grab = null;
+            if (moved) {
+                this.vy = 0;
+                this._setState('fall');
+            } else {
+                this.pet();
+            }
             return Clutter.EVENT_STOP;
         });
         this._box = new TextBox(font, dir);
@@ -175,7 +216,8 @@ export class Dog {
         const info = this._spriteInfo;
         if (!info)
             return;
-        this.actor.set_position(Math.round(this.x - info.w / 2), Math.round(this.y - info.h));
+        const bob = this.state === 'dance' ? (this._danceBob || 0) : 0;
+        this.actor.set_position(Math.round(this.x - info.w / 2), Math.round(this.y - info.h - bob));
         if (this._bubbleShown)
             this._placeBubble();
     }
@@ -262,7 +304,7 @@ export class Dog {
         this._trackIdle();
 
         let ground = this._surfaceUnder(surfaces);
-        if (this.state !== 'emerge' && this.state !== 'dig') {
+        if (!['emerge', 'dig', 'held'].includes(this.state)) {
             if (!ground && this.state !== 'fall') {
                 this.state = 'fall';
                 this.vy = 0;
@@ -321,6 +363,39 @@ export class Dog {
             this._setSprite(this.facing < 0 ? 'walkL' : 'walkR', 0);
             if (this.stateTime > this.nextDecision)
                 this._decide(surfaces);
+            break;
+        case 'held':
+            // Dangling from the pointer, legs going.
+            this._animate(this.facing < 0 ? 'walkL' : 'walkR', 120);
+            break;
+        case 'walkies': {
+            // Trots after the pointer along whatever it's standing on.
+            const [px] = global.get_pointer();
+            const dx = px - this.x;
+            if (Math.abs(dx) > 30) {
+                this.facing = dx < 0 ? -1 : 1;
+                this.x += this.facing * WALK_SPEED * 2.2 * this._scale() / 2 * dt;
+                if (ground)
+                    this.x = Math.max(ground.x1 + 4, Math.min(ground.x2 - 4, this.x));
+                this._animate(this.facing < 0 ? 'walkL' : 'walkR', 140);
+            } else {
+                this._animate('talk');
+            }
+            if (this.stateTime > 15)
+                this._setState('sit');
+            break;
+        }
+        case 'dance':
+            // Little dance: hops from foot to foot, facing this way then that.
+            if (this._frameTime >= 220) {
+                this._frameTime = 0;
+                this.frame++;
+                this.facing = this.frame % 4 < 2 ? -1 : 1;
+            }
+            this._setSprite(this.facing < 0 ? 'walkL' : 'walkR', this.frame % 2);
+            this._danceBob = (this.frame % 2) * 3;
+            if (this.stateTime > 8 || !this._musicPlaying)
+                this._setState('sit');
             break;
         case 'look':
             this._animate('talk');
@@ -434,6 +509,10 @@ export class Dog {
             this.nextDecision = 10 + Math.random() * 10;
             return;
         }
+        if (this._musicPlaying && this._settings.get_boolean('dance') && Math.random() < 0.35) {
+            this._setState('dance');
+            return;
+        }
         const r = Math.random();
         if (r < 0.45) {
             this.facing = Math.random() < 0.5 ? -1 : 1;
@@ -484,7 +563,7 @@ export class Dog {
         const near = Math.abs(px - this.x) < info.w / 2 + NEAR_PX && py > this.y - info.h - NEAR_PX && py < this.y + 30;
         // Dragging something (a window, a file) through the dog: it gets out of the way at once.
         const dragging = (mods & Clutter.ModifierType.BUTTON1_MASK) !== 0;
-        if (near && dragging && !['dig', 'emerge', 'fall'].includes(this.state)) {
+        if (near && dragging && !this._press && !['dig', 'emerge', 'fall', 'held', 'walkies'].includes(this.state)) {
             this.digTo(this._pickSpot(this._surfaces()));
             return;
         }
@@ -529,6 +608,19 @@ export class Dog {
         this._setState('look');
         this.say(pick(LINES.pet));
         this._playSound(SOUNDS.bark);
+    }
+
+    walkies() {
+        if (this.state === 'sleep')
+            this.wake();
+        this._setState('walkies');
+        if (this._settings.get_boolean('chatty'))
+            this.say('* (Walkies!)');
+        this._playSound(SOUNDS.bark);
+    }
+
+    setMusicPlaying(playing) {
+        this._musicPlaying = playing;
     }
 
     notified() {

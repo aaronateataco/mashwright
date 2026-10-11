@@ -43,7 +43,7 @@ class DogToggle extends QuickMenuToggle {
         add(_('Call the dog over'), () => ext._callDog());
         add(_('Let it nap'), () => ext._dog?.sleep());
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        for (const [key, label] of [['chatty', _('Chatty')], ['sounds', _('Sounds')]]) {
+        for (const [key, label] of [['chatty', _('Chatty')], ['sounds', _('Sounds')], ['dance', _('Dance to music')]]) {
             const sw = new PopupMenu.PopupSwitchMenuItem(label, s.get_boolean(key));
             sw.connect('toggled', (_i, on) => s.set_boolean(key, on));
             s.connectObject(`changed::${key}`, () => sw.setToggleState(s.get_boolean(key)), this);
@@ -97,10 +97,56 @@ export default class DogDeskExtension extends Extension {
                     this._dog?.windowClosed(r);
             }, this);
         }, this);
+        // Music playing in any media app (MPRIS): the dog dances now and then.
+        this._musicTimer = GLib.timeout_add_seconds(GLib.PRIORITY_LOW, 5, () => {
+            this._checkMusic();
+            return GLib.SOURCE_CONTINUE;
+        });
+        // Do Not Disturb: the dog takes a quiet nap.
+        this._notifSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.notifications'});
+        this._notifSettings.connectObject('changed::show-banners', () => {
+            if (!this._notifSettings.get_boolean('show-banners'))
+                this._dog?.sleep();
+        }, this);
         this._maybeSnapshot();
     }
 
+    _checkMusic() {
+        const bus = Gio.DBus.session;
+        bus.call('org.freedesktop.DBus', '/org/freedesktop/DBus', 'org.freedesktop.DBus', 'ListNames',
+            null, null, Gio.DBusCallFlags.NONE, 2000, null, (_c, res) => {
+                let names = [];
+                try {
+                    names = bus.call_finish(res).deepUnpack()[0].filter(n => n.startsWith('org.mpris.MediaPlayer2.'));
+                } catch (e) {
+                    return;
+                }
+                if (!names.length) {
+                    this._dog?.setMusicPlaying(false);
+                    return;
+                }
+                let pending = names.length;
+                let playing = false;
+                for (const name of names) {
+                    bus.call(name, '/org/mpris/MediaPlayer2', 'org.freedesktop.DBus.Properties', 'Get',
+                        new GLib.Variant('(ss)', ['org.mpris.MediaPlayer2.Player', 'PlaybackStatus']),
+                        null, Gio.DBusCallFlags.NONE, 1000, null, (_b, r) => {
+                            try {
+                                playing ||= bus.call_finish(r).deepUnpack()[0].deepUnpack() === 'Playing';
+                            } catch (e) { /* player went away */ }
+                            if (--pending === 0)
+                                this._dog?.setMusicPlaying(playing);
+                        });
+                }
+            });
+    }
+
     disable() {
+        if (this._musicTimer)
+            GLib.source_remove(this._musicTimer);
+        this._musicTimer = 0;
+        this._notifSettings?.disconnectObject(this);
+        this._notifSettings = null;
         this._saveDog();
         this._dog?.destroy();
         this._dog = null;

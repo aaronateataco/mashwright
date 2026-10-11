@@ -7,6 +7,8 @@
       <summary>Show the dog's little text boxes</summary></key>
     <key name="sounds" type="b"><default>false</default>
       <summary>Play the dog's sounds from Undertale (bark, text blips, squeaky treat)</summary></key>
+    <key name="dance" type="b"><default>true</default>
+      <summary>Dance now and then while music is playing</summary></key>
     <key name="hidden" type="b"><default>false</default>
       <summary>Hide the dog</summary></key>
     <key name="idle-sleep-minutes" type="i"><range min="1" max="60"/><default>3</default>

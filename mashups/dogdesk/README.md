@@ -8,9 +8,13 @@ A desktop pet for GNOME: the small white dog from **your own copy of Undertale**
 - Naps on whatever it's standing on when you've been away for a few minutes; wakes when you're back.
 - Looks up when a notification arrives (not in Do Not Disturb), and now and then digs over to chew on
   a window you close.
-- Click it to pet it (it barks, if sounds are on). It lives in **Quick Settings** as a "Dog" tile:
+- Click it to pet it (it barks, if sounds are on). **Double-click for walkies**: it trots after your
+  pointer for a while. **Drag it** to pick it up and drop it anywhere (it falls and lands).
+- **Dances** now and then while music plays in any media app (Spotify, browsers, Rhythmbox…), and
+  takes a quiet nap when you turn on Do Not Disturb.
+- It lives in **Quick Settings** as a "Dog" tile:
   turn it on/off, **give it a treat** (it drops ahead of the dog, which trots over and eats it), call
-  it over, let it nap, chatty, sounds, preferences.
+  it over, let it nap, chatty, sounds, dance to music, preferences.
 - Talks in Undertale's own text box: its dialogue font, read from your copy, typed out letter by
   letter with the text blip (sounds on). Remembers where it was when you log back in.
 - Lives on any of your monitors; follows you to a new workspace; stays with you in the Activities overview (it sits and watches).

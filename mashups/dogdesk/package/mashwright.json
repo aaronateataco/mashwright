@@ -2,7 +2,7 @@
   "mashwright": 1,
   "id": "dogdesk",
   "title": "DogDesk",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "authors": [
     "aaronateataco"
   ],
@@ -39,6 +39,6 @@
   },
   "cover": "cover.png",
   "notes": {
-    "firstLaunch": "Needs GNOME Shell 47 or newer. Log out and back in after the first install. Find it in Quick Settings (the Dog tile): give it a treat, call it over, sounds and more. Click the dog to pet it."
+    "firstLaunch": "Needs GNOME Shell 47 or newer. Log out and back in after installing or updating. Click the dog to pet it, double-click for walkies, drag it to pick it up. The Dog tile in Quick Settings has treats, call it over, sounds and more."
   }
 }
