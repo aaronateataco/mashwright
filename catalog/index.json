@@ -1,5 +1,33 @@
 {
   "mashwright_catalog": 1,
   "name": "Mashwright catalog",
-  "mashups": []
+  "mashups": [
+    {
+      "id": "hue-potato",
+      "title": "Hue Potato",
+      "version": "0.1.0",
+      "authors": [
+        "Hue Potato authors"
+      ],
+      "description": "Hue joins Brotato: play Hue Potato, a potato with Hue's hair, ear and eyes and Hue's colour wheel. Enemies, bullets, laser gates and skull boulders the colour of the background vanish. Earn Hue's colours wave by wave, hear Mum's letters, travel through Hue's regions with Hue's music, and fight with Hue's Laser Ring. Everything from Hue is read from your own copy of Hue.",
+      "games": [
+        {
+          "slug": "brotato",
+          "title": "Brotato"
+        },
+        {
+          "slug": "hue",
+          "title": "Hue"
+        }
+      ],
+      "package_url": "https://github.com/aaronateataco/mashwright/releases/download/v0.1.0/hue-potato.mashwright",
+      "sha256": "393a5e4cd738e87d7471a14139ada12041e0eb95f3b33731d815252bed66c781",
+      "size": 9115052,
+      "cover_url": "https://raw.githubusercontent.com/aaronateataco/mashwright/main/examples/hue-potato/cover.jpg",
+      "homepage": "https://github.com/aaronateataco/mashwright/tree/main/mashups/hue-potato",
+      "links": {
+        "melty": "https://melty.gg/m/hue-potato"
+      }
+    }
+  ]
 }
