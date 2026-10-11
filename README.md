@@ -78,6 +78,9 @@ Then drop a `.mashwright` file on the **Add** tab, press **Install**, and **Play
     mashwright inspect ID          which platforms its binaries are for, and how it fits your game
     mashwright status ID           installed? any files changed since?
     mashwright remove ID           delete from your library
+    mashwright pack FOLDER         make a .mashwright package (also from a Melty-format build)
+    mashwright catalog             mashups in the online catalog
+    mashwright get ID              download one from the catalog and install it
     mashwright doctor              what Mashwright can see on this computer
 
 ## Online catalog
@@ -87,6 +90,16 @@ are downloaded from GitHub Releases and checked against their sha256 before inst
 `~/.config/mashwright/catalogs.json`. To list a mashup, see `catalog/README.md`.
 
 Mashwright doesn't scrape or download from Melty; a catalog entry can link to a mashup's Melty page.
+
+## Publishing to both Melty and Mashwright
+If you make a mashup for Melty, you can offer it to Linux and other Mashwright players too: build your
+Melty package as usual, then
+
+    mashwright pack path/to/your-melty-build --version 1.0 --author "You" --cover screenshot.jpg
+
+turns its `recipe.json` and zips into a `.mashwright` package (with checksums). Attach it to a
+GitHub Release and add it to the catalog (`catalog/README.md`), linking your Melty page. Only
+publish mashups you made or have permission to share.
 
 ## In this repository
 - `mashwright/`, `mashwright.py`: the app. `tests/`: its tests (CI runs them on Linux, Windows, macOS).

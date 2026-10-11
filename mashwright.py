@@ -41,6 +41,13 @@ def main(argv=None) -> int:
     p = sub.add_parser("inspect", help="which platforms a mashup's binaries are for, and how it fits your game")
     p.add_argument("id")
     p.add_argument("--game", action="append", default=[], metavar="SLUG=KEY")
+    p = sub.add_parser("pack", help="turn a mashup folder (Mashwright or Melty format) into a .mashwright package")
+    p.add_argument("folder")
+    p.add_argument("-o", "--output", default="")
+    p.add_argument("--title", default="")
+    p.add_argument("--version", dest="pkg_version", default="")
+    p.add_argument("--author", action="append", default=[])
+    p.add_argument("--cover", default="", help="image file to include as the cover")
     p = sub.add_parser("catalog", help="mashups in your online catalogs")
     p.add_argument("--refresh", action="store_true")
     p = sub.add_parser("get", help="download a mashup from your catalogs and install it")
@@ -96,6 +103,11 @@ def run(args, env) -> int:
         return 0
     if cmd == "launch":
         print(app.launch(args.id))
+        return 0
+    if cmd == "pack":
+        from mashwright import packer
+        out = packer.pack(args.folder, args.output, args.title, args.pkg_version, args.author, args.cover)
+        print(f"Wrote {out}")
         return 0
     if cmd == "catalog":
         from mashwright import catalog
