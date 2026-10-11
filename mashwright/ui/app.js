@@ -160,8 +160,28 @@ function renderCatalog() {
   }
 }
 
+// ---- Melty through Wine (Linux) ----
+async function loadMelty() {
+  let st;
+  try { st = await api("/api/melty"); } catch (e) { return; }
+  const card = $("#melty-card");
+  card.hidden = !st.supported;
+  const btn = $("#melty-btn");
+  btn.textContent = st.installed ? "Open Melty" : "Set up Melty";
+  btn.onclick = async () => {
+    try {
+      if (st.installed) { toast((await api("/api/melty/open", {})).message); return; }
+      const bar = card.querySelector(".progress"); bar.hidden = false;
+      const { job } = await api("/api/melty/setup", {});
+      await watchJob(job, bar.firstChild, "Melty is ready");
+      bar.hidden = true; loadMelty();
+    } catch (e) { toast(e.message, true); }
+  };
+}
+
 refresh();
 loadCatalog();
+loadMelty();
   } catch (e) { toast(e.message, true); }
 }
 
@@ -252,8 +272,28 @@ function renderCatalog() {
   }
 }
 
+// ---- Melty through Wine (Linux) ----
+async function loadMelty() {
+  let st;
+  try { st = await api("/api/melty"); } catch (e) { return; }
+  const card = $("#melty-card");
+  card.hidden = !st.supported;
+  const btn = $("#melty-btn");
+  btn.textContent = st.installed ? "Open Melty" : "Set up Melty";
+  btn.onclick = async () => {
+    try {
+      if (st.installed) { toast((await api("/api/melty/open", {})).message); return; }
+      const bar = card.querySelector(".progress"); bar.hidden = false;
+      const { job } = await api("/api/melty/setup", {});
+      await watchJob(job, bar.firstChild, "Melty is ready");
+      bar.hidden = true; loadMelty();
+    } catch (e) { toast(e.message, true); }
+  };
+}
+
 refresh();
 loadCatalog();
+loadMelty();
     };
     const actions = el("div", { class: "actions" },
       installed
@@ -379,8 +419,28 @@ function renderCatalog() {
   }
 }
 
+// ---- Melty through Wine (Linux) ----
+async function loadMelty() {
+  let st;
+  try { st = await api("/api/melty"); } catch (e) { return; }
+  const card = $("#melty-card");
+  card.hidden = !st.supported;
+  const btn = $("#melty-btn");
+  btn.textContent = st.installed ? "Open Melty" : "Set up Melty";
+  btn.onclick = async () => {
+    try {
+      if (st.installed) { toast((await api("/api/melty/open", {})).message); return; }
+      const bar = card.querySelector(".progress"); bar.hidden = false;
+      const { job } = await api("/api/melty/setup", {});
+      await watchJob(job, bar.firstChild, "Melty is ready");
+      bar.hidden = true; loadMelty();
+    } catch (e) { toast(e.message, true); }
+  };
+}
+
 refresh();
 loadCatalog();
+loadMelty();
   } catch (e) { toast(e.message, true); }
 }
 
@@ -470,8 +530,28 @@ function renderCatalog() {
   }
 }
 
+// ---- Melty through Wine (Linux) ----
+async function loadMelty() {
+  let st;
+  try { st = await api("/api/melty"); } catch (e) { return; }
+  const card = $("#melty-card");
+  card.hidden = !st.supported;
+  const btn = $("#melty-btn");
+  btn.textContent = st.installed ? "Open Melty" : "Set up Melty";
+  btn.onclick = async () => {
+    try {
+      if (st.installed) { toast((await api("/api/melty/open", {})).message); return; }
+      const bar = card.querySelector(".progress"); bar.hidden = false;
+      const { job } = await api("/api/melty/setup", {});
+      await watchJob(job, bar.firstChild, "Melty is ready");
+      bar.hidden = true; loadMelty();
+    } catch (e) { toast(e.message, true); }
+  };
+}
+
 refresh();
 loadCatalog();
+loadMelty();
     goTab("mashups");
   } catch (e) { toast(e.message, true); }
 }
@@ -557,8 +637,28 @@ function renderCatalog() {
   }
 }
 
+// ---- Melty through Wine (Linux) ----
+async function loadMelty() {
+  let st;
+  try { st = await api("/api/melty"); } catch (e) { return; }
+  const card = $("#melty-card");
+  card.hidden = !st.supported;
+  const btn = $("#melty-btn");
+  btn.textContent = st.installed ? "Open Melty" : "Set up Melty";
+  btn.onclick = async () => {
+    try {
+      if (st.installed) { toast((await api("/api/melty/open", {})).message); return; }
+      const bar = card.querySelector(".progress"); bar.hidden = false;
+      const { job } = await api("/api/melty/setup", {});
+      await watchJob(job, bar.firstChild, "Melty is ready");
+      bar.hidden = true; loadMelty();
+    } catch (e) { toast(e.message, true); }
+  };
+}
+
 refresh();
 loadCatalog();
+loadMelty();
   } catch (e) { toast(e.message, true); }
 }
 
@@ -648,5 +748,25 @@ function renderCatalog() {
   }
 }
 
+// ---- Melty through Wine (Linux) ----
+async function loadMelty() {
+  let st;
+  try { st = await api("/api/melty"); } catch (e) { return; }
+  const card = $("#melty-card");
+  card.hidden = !st.supported;
+  const btn = $("#melty-btn");
+  btn.textContent = st.installed ? "Open Melty" : "Set up Melty";
+  btn.onclick = async () => {
+    try {
+      if (st.installed) { toast((await api("/api/melty/open", {})).message); return; }
+      const bar = card.querySelector(".progress"); bar.hidden = false;
+      const { job } = await api("/api/melty/setup", {});
+      await watchJob(job, bar.firstChild, "Melty is ready");
+      bar.hidden = true; loadMelty();
+    } catch (e) { toast(e.message, true); }
+  };
+}
+
 refresh();
 loadCatalog();
+loadMelty();

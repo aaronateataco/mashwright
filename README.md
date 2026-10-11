@@ -83,6 +83,19 @@ Then drop a `.mashwright` file on the **Add** tab, press **Install**, and **Play
     mashwright get ID              download one from the catalog and install it
     mashwright doctor              what Mashwright can see on this computer
 
+## Melty on Linux
+Melty (melty.gg) is Windows-only. On Linux, Mashwright can run the **official Melty app** through
+Wine, like Lutris or Bottles do: **Discover → Melty on Linux → Set up Melty**, or
+
+    mashwright melty setup     # gets Wine if needed, installs Melty from melty.gg into its own prefix
+    mashwright melty open      # or "Melty (via Wine)" in your app menu
+
+Mashwright doesn't ship or modify Melty; it downloads the installer from melty.gg's own download
+link. It shows Melty your Linux Steam libraries (drives outside your home folder get letters from
+G:, like a Windows games drive), and forwards melty:// links (sign-in, invites) to it.
+`mashwright melty remove` takes it all out again. Melty doesn't officially support Linux, and this
+isn't affiliated with or endorsed by Melty / Stella Montis Inc.
+
 ## Online catalog
 **Discover → From the catalog** lists mashups from `catalog/index.json` in this repository; packages
 are downloaded from GitHub Releases and checked against their sha256 before installing

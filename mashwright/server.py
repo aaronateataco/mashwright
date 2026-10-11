@@ -160,6 +160,9 @@ def _make_handler(srv: Server):
                 if path == "/api/catalog":
                     force = "refresh=1" in self.path
                     return self._json(200, {"mashups": srv.app.catalog(force)})
+                if path == "/api/melty":
+                    from . import melty_wine
+                    return self._json(200, melty_wine.status(srv.env))
                 if path == "/api/log":
                     return self._json(200, {"lines": list(srv.logbuf.lines)})
                 if path.startswith("/api/jobs/"):
@@ -233,6 +236,13 @@ def _make_handler(srv: Server):
                 if path == "/api/catalog/get":
                     jid = srv.start_job(f"Get {data.get('id')}", app.get_from_catalog, str(data.get("id", "")))
                     return self._json(202, {"job": jid})
+                if path == "/api/melty/setup":
+                    from . import melty_wine
+                    jid = srv.start_job("Set up Melty", lambda progress=None: melty_wine.setup(srv.env, progress))
+                    return self._json(202, {"job": jid})
+                if path == "/api/melty/open":
+                    from . import melty_wine
+                    return self._json(200, {"message": melty_wine.open_melty(srv.env)})
                 if path == "/api/uninstall":
                     jid = srv.start_job(f"Uninstall {data.get('id')}", app.uninstall, str(data.get("id", "")))
                     return self._json(202, {"job": jid})

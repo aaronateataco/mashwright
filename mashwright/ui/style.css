@@ -243,3 +243,8 @@ button.pill.big, [data-theme="gnome"] button.pill.big { border-radius: 9999px; p
 .tile-actions { display: flex; gap: 10px; align-items: center; margin-top: 6px; }
 .tile-actions .pill { padding: 5px 16px !important; border-radius: 9999px; font-size: .85rem; }
 .linkout { color: #fff; font-size: .85rem; font-weight: 600; opacity: .9; }
+.melty-card { display: flex; gap: 18px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-top: 22px; }
+.melty-card > div:first-child { flex: 1 1 340px; }
+.melty-card h2 { margin: 0 0 4px; }
+.melty-card p { margin: 0; }
+.melty-card .progress { flex-basis: 100%; }

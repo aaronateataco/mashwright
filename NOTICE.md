@@ -5,6 +5,8 @@
 - **Inspired by Melty** ([melty.gg](https://melty.gg)), the mashup launcher by Stella Montis Inc.
   Mashwright is not affiliated with or endorsed by Melty or Stella Montis Inc., contains none of
   Melty's code, assets or branding, and does not use Melty's services.
+- The "Melty on Linux" helper downloads Melty's official installer from melty.gg and runs it with
+  Wine (portable builds by Kron4ek, LGPL, when no system Wine is installed). Melty is not included.
 - The Mashwright icon (`packaging/mashwright.svg`) is original artwork made for this project, MIT.
 - Mashwright uses only the Python standard library.
 - `examples/hue-potato` packages Hue Potato, a fan mod: Hue © Fiddlesticks / Curve Digital, Brotato ©

@@ -53,6 +53,9 @@ def main(argv=None) -> int:
     p = sub.add_parser("get", help="download a mashup from your catalogs and install it")
     p.add_argument("id")
     p.add_argument("--no-install", action="store_true")
+    p = sub.add_parser("melty", help="run the official Melty app through Wine (Linux)")
+    p.add_argument("action", choices=["setup", "open", "status", "remove"])
+    p.add_argument("url", nargs="?", default="")
     sub.add_parser("doctor", help="what Mashwright can see on this computer")
     args = ap.parse_args(argv)
     env = platforms.current()
@@ -73,6 +76,20 @@ def run(args, env) -> int:
         return 0
     if cmd == "doctor":
         return doctor(env)
+    if cmd == "melty":
+        from mashwright import melty_wine as mw
+        if args.action == "setup":
+            st = mw.setup(env, progress=lambda msg, frac: print(f"  {int(frac * 100):3d}% {msg}"))
+            print("Melty is set up. Open it from your app menu (Melty (via Wine)) or: mashwright melty open")
+        elif args.action == "open":
+            print(mw.open_melty(env, args.url))
+        elif args.action == "remove":
+            mw.remove(env)
+            print("Removed Melty's Wine prefix and menu entry")
+        else:
+            for k, v in mw.status(env).items():
+                print(f"  {k:10} {v}")
+        return 0
     from mashwright.app import App
     app = App(env)
     if cmd == "list":
