@@ -7,6 +7,7 @@ from mashwright.model import MashwrightError
 
 
 class MeltyWineTest(unittest.TestCase):
+    @unittest.skipIf(os.name == "nt", "Linux-only: Windows paths can't contain ':' and symlinks need admin")
     def test_library_drive_letters_and_vdf(self):
         env = fake_env("linux")
         inside = env.home / ".steam/steam"
