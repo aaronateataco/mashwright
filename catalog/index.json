@@ -3,6 +3,26 @@
   "name": "Mashwright catalog",
   "mashups": [
     {
+      "id": "dogdesk",
+      "title": "DogDesk",
+      "version": "0.1.0",
+      "authors": [
+        "aaronateataco"
+      ],
+      "description": "GNOME \u00d7 Undertale: the small white dog from your own copy of Undertale lives on your GNOME desktop. It trots along your window tops, naps when you're away, notices notifications, sometimes absorbs a window you close, and keeps out of your way (never over fullscreen apps, and it dodges drags). Its sprites and music are read from your Undertale install; nothing from the game is included.",
+      "games": [
+        {
+          "slug": "undertale",
+          "title": "Undertale"
+        }
+      ],
+      "package_url": "https://github.com/aaronateataco/mashwright/releases/download/v0.2.0/dogdesk.mashwright",
+      "sha256": "e52a9deb4ccbe11b4e9cb189874fcae729a9038e80e14ff7880e5ff5f03c95b6",
+      "size": 908768,
+      "cover_url": "https://raw.githubusercontent.com/aaronateataco/mashwright/main/mashups/dogdesk/package/cover.png",
+      "homepage": "https://github.com/aaronateataco/mashwright/tree/main/mashups/dogdesk"
+    },
+    {
       "id": "hue-potato",
       "title": "Hue Potato",
       "version": "0.1.0",
