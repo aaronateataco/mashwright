@@ -40,6 +40,7 @@ class App:
                 "status": st,
                 "ready": not missing,
                 "fit": self.fit(r, picked),
+                "desktop": self.desktop_state(r) if r.get("gnome_extension") else None,
             })
         return out
 
@@ -109,6 +110,38 @@ class App:
         if r and r.get("gnome_extension"):
             self._gnome_extension(r["gnome_extension"], False)
         return installer.uninstall(self.env, mashup_id)
+
+    def _enabled_extensions(self) -> List[str]:
+        code, cur = self.env.run(["gsettings", "get", "org.gnome.shell", "enabled-extensions"], 10)
+        if code != 0:
+            return []
+        return [x.strip().strip("'") for x in cur.strip().lstrip("@as").strip().strip("[]").split(",") if x.strip()]
+
+    def desktop_state(self, r: dict) -> dict:
+        uuid = r["gnome_extension"]
+        return {"extension": uuid, "enabled": uuid in self._enabled_extensions(),
+                "installed": installer.is_installed(self.env, r["id"])}
+
+    def set_desktop(self, mashup_id: str, on: bool) -> dict:
+        r = self._recipe(mashup_id)
+        if not r.get("gnome_extension"):
+            raise MashwrightError("This mashup isn't a desktop mashup")
+        if not installer.is_installed(self.env, mashup_id):
+            raise MashwrightError("Install it first")
+        self._gnome_extension(r["gnome_extension"], on)
+        if not on:
+            items = [x for x in self._enabled_extensions() if x != r["gnome_extension"]]
+            self.env.run(["gsettings", "set", "org.gnome.shell", "enabled-extensions",
+                          "[" + ", ".join(f"'{x}'" for x in items) + "]"], 10)
+        return self.desktop_state(r)
+
+    def desktop_prefs(self, mashup_id: str) -> str:
+        r = self._recipe(mashup_id)
+        tool = self.env.which("gnome-extensions")
+        if not r.get("gnome_extension") or not tool:
+            raise MashwrightError("No preferences to open")
+        launcher._spawn([tool, "prefs", r["gnome_extension"]])
+        return "Opening its preferences"
 
     def _gnome_extension(self, uuid: str, on: bool) -> None:
         """Turn a desktop mashup's GNOME Shell extension on or off (GNOME's own command)."""

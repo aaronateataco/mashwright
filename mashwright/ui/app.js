@@ -124,6 +124,10 @@ function mashupArt(m) {
 async function mainAction(m) {
   const r = m.recipe;
   try {
+    if (m.desktop && m.status.installed) {
+      await api("/api/desktop", { id: r.id, on: !m.desktop.enabled });
+      toast(m.desktop.enabled ? `${r.title} is off` : `${r.title} is on`); refresh(); return;
+    }
     if (m.status.installed) { toast((await api("/api/launch", { id: r.id })).message); return; }
     if (!m.ready) { toast("Missing: " + m.missing.join(", "), true); return; }
     const { job } = await api("/api/install", { id: r.id, choices: {} });
@@ -210,7 +214,8 @@ function renderDiscover() {
           el("h2", {}, r.title),
           el("p", { class: "by" }, (r.authors || []).join(", ") || "\u00a0"),
           el("button", { class: "pill big", onclick: () => mainAction(m) },
-            m.status.installed ? "▶  Play" : m.ready ? "Install" : "Missing games"))));
+            m.desktop && m.status.installed ? (m.desktop.enabled ? "On your desktop ✓" : "Turn on")
+              : m.status.installed ? "▶  Play" : m.ready ? "Install" : "Missing games"))));
     });
     if (list.length > 1) {
       const go = d => { heroIndex = (heroIndex + d + list.length) % list.length; renderDiscover(); };
@@ -227,7 +232,8 @@ function renderDiscover() {
     const img = mashupArt(m);
     shelf.append(el("button", { class: "tile", onclick: () => goTab("mashups"), "aria-label": m.recipe.title },
       img ? el("img", { src: img, alt: "" }) : el("div", { class: "tile-fallback" }),
-      el("span", { class: "chip" }, m.status.installed ? "Installed" : "v" + m.recipe.version),
+      el("span", { class: "chip" }, m.desktop ? (m.desktop.enabled ? "On your desktop" : "Desktop · off")
+        : m.status.installed ? "Installed" : "v" + m.recipe.version),
       el("span", { class: "tile-title" }, m.recipe.title)));
   }
   if (!list.length) shelf.append(el("p", { class: "muted" }, "Nothing here yet."));
@@ -296,7 +302,13 @@ loadCatalog();
 loadMelty();
     };
     const actions = el("div", { class: "actions" },
-      installed
+      installed && m.desktop
+        ? [el("button", { onclick: async () => { try { await api("/api/desktop", { id: r.id, on: !m.desktop.enabled });
+                toast(m.desktop.enabled ? `${r.title} is off` : `${r.title} is on (new installs need a log out and in)`); refresh(); }
+              catch (e) { toast(e.message, true); } } }, m.desktop.enabled ? "Turn off" : "Turn on"),
+           el("button", { class: "ghost", onclick: async () => { try { toast((await api("/api/desktop/prefs", { id: r.id })).message); } catch (e) { toast(e.message, true); } } }, "Preferences"),
+           el("button", { class: "ghost", onclick: () => run("Uninstalled", "/api/uninstall", { id: r.id }) }, "Uninstall")]
+      : installed
         ? [el("button", { onclick: async () => { try { toast((await api("/api/launch", { id: r.id })).message); } catch (e) { toast(e.message, true); } } }, "Play"),
            el("button", { class: "ghost", onclick: () => run("Uninstalled", "/api/uninstall", { id: r.id }) }, "Uninstall")]
         : [el("button", { disabled: !m.ready, onclick: () => run("Installed", "/api/install", { id: r.id, choices }) }, "Install"),
@@ -383,6 +395,10 @@ function mashupArt(m) {
 async function mainAction(m) {
   const r = m.recipe;
   try {
+    if (m.desktop && m.status.installed) {
+      await api("/api/desktop", { id: r.id, on: !m.desktop.enabled });
+      toast(m.desktop.enabled ? `${r.title} is off` : `${r.title} is on`); refresh(); return;
+    }
     if (m.status.installed) { toast((await api("/api/launch", { id: r.id })).message); return; }
     if (!m.ready) { toast("Missing: " + m.missing.join(", "), true); return; }
     const { job } = await api("/api/install", { id: r.id, choices: {} });
@@ -469,7 +485,8 @@ function renderDiscover() {
           el("h2", {}, r.title),
           el("p", { class: "by" }, (r.authors || []).join(", ") || "\u00a0"),
           el("button", { class: "pill big", onclick: () => mainAction(m) },
-            m.status.installed ? "▶  Play" : m.ready ? "Install" : "Missing games"))));
+            m.desktop && m.status.installed ? (m.desktop.enabled ? "On your desktop ✓" : "Turn on")
+              : m.status.installed ? "▶  Play" : m.ready ? "Install" : "Missing games"))));
     });
     if (list.length > 1) {
       const go = d => { heroIndex = (heroIndex + d + list.length) % list.length; renderDiscover(); };
@@ -486,7 +503,8 @@ function renderDiscover() {
     const img = mashupArt(m);
     shelf.append(el("button", { class: "tile", onclick: () => goTab("mashups"), "aria-label": m.recipe.title },
       img ? el("img", { src: img, alt: "" }) : el("div", { class: "tile-fallback" }),
-      el("span", { class: "chip" }, m.status.installed ? "Installed" : "v" + m.recipe.version),
+      el("span", { class: "chip" }, m.desktop ? (m.desktop.enabled ? "On your desktop" : "Desktop · off")
+        : m.status.installed ? "Installed" : "v" + m.recipe.version),
       el("span", { class: "tile-title" }, m.recipe.title)));
   }
   if (!list.length) shelf.append(el("p", { class: "muted" }, "Nothing here yet."));
@@ -601,6 +619,10 @@ function mashupArt(m) {
 async function mainAction(m) {
   const r = m.recipe;
   try {
+    if (m.desktop && m.status.installed) {
+      await api("/api/desktop", { id: r.id, on: !m.desktop.enabled });
+      toast(m.desktop.enabled ? `${r.title} is off` : `${r.title} is on`); refresh(); return;
+    }
     if (m.status.installed) { toast((await api("/api/launch", { id: r.id })).message); return; }
     if (!m.ready) { toast("Missing: " + m.missing.join(", "), true); return; }
     const { job } = await api("/api/install", { id: r.id, choices: {} });
@@ -687,7 +709,8 @@ function renderDiscover() {
           el("h2", {}, r.title),
           el("p", { class: "by" }, (r.authors || []).join(", ") || "\u00a0"),
           el("button", { class: "pill big", onclick: () => mainAction(m) },
-            m.status.installed ? "▶  Play" : m.ready ? "Install" : "Missing games"))));
+            m.desktop && m.status.installed ? (m.desktop.enabled ? "On your desktop ✓" : "Turn on")
+              : m.status.installed ? "▶  Play" : m.ready ? "Install" : "Missing games"))));
     });
     if (list.length > 1) {
       const go = d => { heroIndex = (heroIndex + d + list.length) % list.length; renderDiscover(); };
@@ -704,7 +727,8 @@ function renderDiscover() {
     const img = mashupArt(m);
     shelf.append(el("button", { class: "tile", onclick: () => goTab("mashups"), "aria-label": m.recipe.title },
       img ? el("img", { src: img, alt: "" }) : el("div", { class: "tile-fallback" }),
-      el("span", { class: "chip" }, m.status.installed ? "Installed" : "v" + m.recipe.version),
+      el("span", { class: "chip" }, m.desktop ? (m.desktop.enabled ? "On your desktop" : "Desktop · off")
+        : m.status.installed ? "Installed" : "v" + m.recipe.version),
       el("span", { class: "tile-title" }, m.recipe.title)));
   }
   if (!list.length) shelf.append(el("p", { class: "muted" }, "Nothing here yet."));

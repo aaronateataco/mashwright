@@ -2,15 +2,43 @@
   "mashwright": 1,
   "id": "dogdesk",
   "title": "DogDesk",
-  "version": "0.1.0",
-  "authors": ["aaronateataco"],
+  "version": "0.2.0",
+  "authors": [
+    "aaronateataco"
+  ],
   "license": "MIT",
-  "description": "GNOME × Undertale: the small white dog from your own copy of Undertale lives on your GNOME desktop. It trots along your window tops, naps when you're away, notices notifications, sometimes absorbs a window you close, and keeps out of your way (never over fullscreen apps, and it dodges drags). Its sprites and music are read from your Undertale install; nothing from the game is included.",
-  "games": [{"slug": "undertale", "role": "primary", "title": "Undertale"}],
-  "components": [{"id": "ext", "file": "dogdesk-extension.zip", "extract": true, "label": "DogDesk GNOME Shell extension"}],
-  "mappings": [{"component": "ext", "to": "{gnome_extensions}/dogdesk@aaronateataco.github.io", "when": {"host": "linux"}}],
+  "description": "GNOME \u00d7 Undertale: the small white dog from your own copy of Undertale lives on your GNOME desktop. It trots along your window tops, naps when you're away, notices notifications, sometimes absorbs a window you close, and keeps out of your way (never over fullscreen apps, and it dodges drags). Its sprites and music are read from your Undertale install; nothing from the game is included.",
+  "games": [
+    {
+      "slug": "undertale",
+      "role": "primary",
+      "title": "Undertale"
+    }
+  ],
+  "components": [
+    {
+      "id": "ext",
+      "file": "dogdesk-extension.zip",
+      "extract": true,
+      "label": "DogDesk GNOME Shell extension"
+    }
+  ],
+  "mappings": [
+    {
+      "component": "ext",
+      "to": "{gnome_extensions}/dogdesk@aaronateataco.github.io",
+      "when": {
+        "host": "linux"
+      }
+    }
+  ],
   "gnome_extension": "dogdesk@aaronateataco.github.io",
-  "launch": {"kind": "desktop", "message": "The dog is on your desktop. The first time, log out and back in so GNOME loads it."},
+  "launch": {
+    "kind": "desktop",
+    "message": "The dog is on your desktop. The first time, log out and back in so GNOME loads it."
+  },
   "cover": "cover.png",
-  "notes": {"firstLaunch": "Needs GNOME Shell 47 or newer. Click the dog to pet it; its menu is in the top bar."}
+  "notes": {
+    "firstLaunch": "Needs GNOME Shell 47 or newer. Click the dog to pet it; its menu is in the top bar."
+  }
 }

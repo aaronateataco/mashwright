@@ -243,6 +243,10 @@ def _make_handler(srv: Server):
                 if path == "/api/melty/open":
                     from . import melty_wine
                     return self._json(200, {"message": melty_wine.open_melty(srv.env)})
+                if path == "/api/desktop":
+                    return self._json(200, app.set_desktop(str(data.get("id", "")), bool(data.get("on"))))
+                if path == "/api/desktop/prefs":
+                    return self._json(200, {"message": app.desktop_prefs(str(data.get("id", "")))})
                 if path == "/api/uninstall":
                     jid = srv.start_job(f"Uninstall {data.get('id')}", app.uninstall, str(data.get("id", "")))
                     return self._json(202, {"job": jid})

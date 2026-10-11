@@ -68,6 +68,20 @@ export class Dog {
         this._chatterAt = this._now() + 60 + Math.random() * 120;
         this._absorbReadyAt = 0;
         this._setSprite('emerge', 0);
+        this._pointerMovedAt = this._now();
+        this._tickCount = 0;
+        // Out of the way in the Activities overview.
+        Main.overview.connectObject('showing', () => this._setHidden(true), 'hidden', () => this._setHidden(false), this);
+        // A new workspace: the dog digs over to it (popping up somewhere sensible there).
+        global.workspace_manager.connectObject('active-workspace-changed', () => {
+            this._surfCache = null;
+            if (this.state !== 'sleep')
+                GLib.timeout_add(GLib.PRIORITY_DEFAULT, 400, () => {
+                    this._surfCache = null;
+                    this.digTo(this._pickSpot(this._surfaces()));
+                    return GLib.SOURCE_REMOVE;
+                });
+        }, this);
         this._timer = GLib.timeout_add(GLib.PRIORITY_DEFAULT, TICK_MS, () => {
             try {
                 this._tick(TICK_MS / 1000);
@@ -78,7 +92,18 @@ export class Dog {
         });
     }
 
+    _setHidden(hidden) {
+        this.actor.opacity = hidden ? 0 : 255;
+        this.actor.reactive = !hidden;
+        if (hidden)
+            this._bubble.opacity = 0;
+        else if (this._bubbleShown)
+            this._bubble.opacity = 255;
+    }
+
     destroy() {
+        Main.overview.disconnectObject(this);
+        global.workspace_manager.disconnectObject(this);
         if (this._timer)
             GLib.source_remove(this._timer);
         if (this._typeTimer)
@@ -96,9 +121,15 @@ export class Dog {
         return this._settings.get_int('scale');
     }
 
+    // The monitor the dog is on (it can live on any of them).
+    _monitor() {
+        const monitors = Main.layoutManager.monitors;
+        const i = monitors.findIndex(m => this.x >= m.x && this.x < m.x + m.width && this.y > m.y && this.y <= m.y + m.height + 2);
+        return i >= 0 ? i : Main.layoutManager.primaryIndex;
+    }
+
     _workArea() {
-        const mon = this._monitorIndex ?? Main.layoutManager.primaryIndex;
-        return Main.layoutManager.getWorkAreaForMonitor(mon);
+        return Main.layoutManager.getWorkAreaForMonitor(this._monitor());
     }
 
     // ---- sprites ----------------------------------------------------------------------------
@@ -132,8 +163,24 @@ export class Dog {
     // ---- the world: surfaces the dog can stand on --------------------------------------------
 
     _surfaces() {
-        const wa = this._workArea();
-        const out = [{x1: wa.x, x2: wa.x + wa.width, y: wa.y + wa.height, win: null}];
+        const now = GLib.get_monotonic_time();
+        if (this._surfCache && now - this._surfCache.at < 200000)
+            return this._surfCache.list;
+        const list = this._computeSurfaces();
+        this._surfCache = {at: now, list};
+        return list;
+    }
+
+    _floorFor(surfaces, x) {
+        const floors = surfaces.filter(s => s.floor);
+        return floors.find(s => x >= s.x1 && x < s.x2) || floors[0];
+    }
+
+    _computeSurfaces() {
+        const out = Main.layoutManager.monitors.map((_m, i) => {
+            const a = Main.layoutManager.getWorkAreaForMonitor(i);
+            return {x1: a.x, x2: a.x + a.width, y: a.y + a.height, win: null, floor: true};
+        });
         const ws = global.workspace_manager.get_active_workspace();
         const wins = global.display.sort_windows_by_stacking(
             global.get_window_actors().map(a => a.meta_window).filter(w =>
@@ -142,6 +189,7 @@ export class Dog {
         const rects = wins.map(w => w.get_frame_rect());
         wins.forEach((w, i) => {
             const r = rects[i];
+            const wa = Main.layoutManager.getWorkAreaForMonitor(w.get_monitor());
             if (r.y <= wa.y + 4 || r.y > wa.y + wa.height - 40 || r.width < 120)
                 return;   // maximised or off-screen tops aren't somewhere to stand
             // The visible stretches of this window's top edge (windows above it cut pieces out).
@@ -175,6 +223,12 @@ export class Dog {
     // ---- behaviour ---------------------------------------------------------------------------
 
     _tick(dt) {
+        // Asleep it barely moves: think five times less often.
+        this._tickCount++;
+        if (this.state === 'sleep' && this._tickCount % 5)
+            return;
+        if (this.state === 'sleep')
+            dt *= 5;
         const now = this._now();
         this.stateTime += dt;
         this._frameTime += dt * 1000;
@@ -212,7 +266,7 @@ export class Dog {
                 this._setState('sit');
             } else {
                 this.y = ny;
-                const floor = surfaces[0];
+                const floor = this._floorFor(surfaces, this.x);
                 if (this.y > floor.y) {
                     this.y = floor.y;
                     this._setState('sit');
@@ -248,9 +302,15 @@ export class Dog {
             if (this.stateTime > 2.5)
                 this._setState('sit');
             break;
-        case 'sleep':
-            this._animate('sleep', 900);
+        case 'sleep': {
+            // In winter a long nap turns the dog into a little snow pile, as in Snowdin.
+            const month = new Date().getMonth();
+            if ((month === 11 || month <= 1) && this.stateTime > 20)
+                this._setSprite('pile', 0);
+            else
+                this._animate('sleep', 900);
             break;
+        }
         case 'wake':
             this._animate('wake', 400);
             if (this.stateTime > 1.0)
@@ -277,7 +337,7 @@ export class Dog {
             break;
         }
 
-        if (this._settings.get_boolean('chatty') && now > this._chatterAt && this.state === 'sit') {
+        if (this._settings.get_boolean('chatty') && now > this._chatterAt && this.state === 'sit' && !this._userFocused()) {
             this._chatterAt = now + 240 + Math.random() * 600;
             this.say(pick(LINES.chatter));
         }
@@ -308,7 +368,18 @@ export class Dog {
         this.nextDecision = 2 + Math.random() * 6;
     }
 
+    // Typing or watching something: the keyboard is busy but the pointer is still.
+    _userFocused() {
+        const idleMs = global.backend.get_core_idle_monitor().get_idletime();
+        return idleMs < 3000 && this._now() - this._pointerMovedAt > 4;
+    }
+
     _decide(surfaces) {
+        if (this._userFocused()) {
+            this._setState('sit');
+            this.nextDecision = 10 + Math.random() * 10;
+            return;
+        }
         const r = Math.random();
         if (r < 0.45) {
             this.facing = Math.random() < 0.5 ? -1 : 1;
@@ -351,8 +422,10 @@ export class Dog {
         const [lx, ly] = this._lastPointer;
         this._lastPointer = [px, py];
         const moving = Math.hypot(px - lx, py - ly) > 1;
-        if (moving)
+        if (moving) {
             this._lastActive = GLib.get_monotonic_time();
+            this._pointerMovedAt = this._now();
+        }
         const info = this._spriteInfo || {w: 50, h: 40};
         const near = Math.abs(px - this.x) < info.w / 2 + NEAR_PX && py > this.y - info.h - NEAR_PX && py < this.y + 30;
         // Dragging something (a window, a file) through the dog: it gets out of the way at once.
@@ -369,7 +442,9 @@ export class Dog {
 
     _trackIdle() {
         const idleMs = global.backend.get_core_idle_monitor().get_idletime();
-        const sleepAfter = this._settings.get_int('idle-sleep-minutes') * 60000;
+        const hour = new Date().getHours();
+        const night = hour >= 23 || hour < 6;
+        const sleepAfter = this._settings.get_int('idle-sleep-minutes') * 60000 / (night ? 3 : 1);
         if (idleMs > sleepAfter && ['sit', 'walk', 'look'].includes(this.state)) {
             this._setState('sleep');
             if (this._settings.get_boolean('chatty'))
@@ -417,7 +492,7 @@ export class Dog {
         const surfaces = this._surfaces();
         const cx = rect.x + rect.width / 2;
         const below = surfaces.filter(s => s.y >= rect.y + rect.height - 5 && cx >= s.x1 && cx <= s.x2)
-            .sort((a, b) => a.y - b.y)[0] || surfaces[0];
+            .sort((a, b) => a.y - b.y)[0] || this._floorFor(surfaces, cx);
         this._digTarget = {x: cx, y: below.y};
         this._afterEmerge = 'chew';
         this._setState('dig');
@@ -460,11 +535,11 @@ export class Dog {
     _placeBubble() {
         const [bw, bh] = this._bubble.get_size();
         const info = this._spriteInfo || {h: 40};
-        const mon = Main.layoutManager.primaryMonitor;
+        const mon = Main.layoutManager.monitors[this._monitor()];
         let x = Math.round(this.x - bw / 2);
         let y = Math.round(this.y - info.h - bh - 10);
         x = Math.max(mon.x + 8, Math.min(mon.x + mon.width - bw - 8, x));
-        if (y < Main.panel.height + 6)
+        if (y < mon.y + Main.panel.height + 6)
             y = Math.round(this.y + 8);
         this._bubble.set_position(x, y);
     }

@@ -39,6 +39,9 @@ class GnomeMashupTest(unittest.TestCase):
         self.assertTrue((env.home / ".local/share/gnome-shell/extensions/pet@test/extension.js").is_file())
         self.assertIn(["gsettings", "set", "org.gnome.shell", "enabled-extensions", "['other@ext', 'pet@test']"], calls)
         self.assertEqual(app.launch("pet"), "On your desktop")
+        state = app.set_desktop("pet", False)
+        self.assertIn(["/usr/bin/gnome-extensions", "disable", "pet@test"], calls)
+        self.assertEqual(state["extension"], "pet@test")
         app.uninstall("pet")
         self.assertFalse((env.home / ".local/share/gnome-shell/extensions/pet@test").exists())
 
