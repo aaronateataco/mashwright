@@ -111,7 +111,7 @@ export default class DogDeskExtension extends Extension {
         for (const a of global.get_window_actors())
             a.meta_window?.disconnectObject(this);
         this._settings?.disconnectObject(this);
-        this._toggle?.destroy();
+        // The indicator owns its Quick Settings items: destroying it destroys the tile too.
         this._indicator?.quickSettingsItems.forEach(i => i.destroy());
         this._indicator?.destroy();
         this._toggle = this._indicator = null;
