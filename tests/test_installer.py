@@ -90,7 +90,7 @@ class InstallerTest(unittest.TestCase):
         g = Game(key="steam:1", store="steam", store_id="1", title="G", install_dir=self.game_dir,
                  platform="windows", runner="proton", extra={"prefix": str(self.env.home / "pfx")})
         ctx = rcp.context(base_recipe(), {"brotato": g}, self.env)
-        self.assertTrue(str(ctx["appdata"]).endswith("pfx/drive_c/users/steamuser/AppData/Roaming"))
+        self.assertTrue(Path(ctx["appdata"]).as_posix().endswith("pfx/drive_c/users/steamuser/AppData/Roaming"))
 
     def test_library_import_and_versions(self):
         pkg = self.env.home / "demo.mashwright"

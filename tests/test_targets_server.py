@@ -21,8 +21,8 @@ class SwitchTest(unittest.TestCase):
         g = games["0100000000010000"]
         kinds = sorted(b["kind"] for b in g.extra["mod_roots"])
         self.assertEqual(kinds, ["atmosphere", "yuzu"])
-        self.assertTrue(str(switch.mod_root(g, "yuzu", "my-mod")).endswith("sudachi/load/0100000000010000/my-mod"))
-        self.assertTrue(str(switch.mod_root(g, "atmosphere", "my-mod")).endswith("atmosphere/contents/0100000000010000"))
+        self.assertTrue(switch.mod_root(g, "yuzu", "my-mod").as_posix().endswith("sudachi/load/0100000000010000/my-mod"))
+        self.assertTrue(switch.mod_root(g, "atmosphere", "my-mod").as_posix().endswith("atmosphere/contents/0100000000010000"))
 
 
 class AndroidTest(unittest.TestCase):

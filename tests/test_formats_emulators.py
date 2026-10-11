@@ -1,3 +1,4 @@
+from pathlib import Path
 import json
 import unittest
 import zipfile
@@ -55,7 +56,7 @@ class EmulatorTest(unittest.TestCase):
         env = fake_env("linux")
         (env.home / ".local/share/Cemu").mkdir(parents=True)
         g = emulators.game_for(env, {"system": "wiiu", "id": "00050000101C9500", "title": "BotW"})
-        self.assertTrue(emulators.paths(g, "my-pack")["emu_mod"].endswith("Cemu/graphicPacks/my-pack"))
+        self.assertTrue(Path(emulators.paths(g, "my-pack")["emu_mod"]).as_posix().endswith("Cemu/graphicPacks/my-pack"))
         self.assertIsNone(emulators.game_for(env, {"system": "ps2", "id": "SLUS-20062"}))
 
 
