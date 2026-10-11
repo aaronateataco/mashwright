@@ -8,6 +8,8 @@ import Clutter from 'gi://Clutter';
 import Meta from 'gi://Meta';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
+import {TextBox} from './textbox.js';
+
 const TICK_MS = 50;
 const FRAME_MS = 260;
 const GRAVITY = 1800;      // px/s²
@@ -17,8 +19,10 @@ const NEAR_PX = 90;
 export const SPRITES = {
     walkL: 'spr_tobdogl', walkR: 'spr_tobdogr', sleep: 'spr_sleepdog', wake: 'spr_wakedog',
     talk: 'spr_tobdogl_talk', emerge: 'spr_emergentdog', scoot: 'spr_tobydogscoot_small',
-    eat: 'spr_tobydogeat_small', pile: 'spr_tobdog_pile',
+    eat: 'spr_tobydogeat_small', pile: 'spr_tobdog_pile', treat: 'spr_dogtreat',
 };
+
+export const SOUNDS = {bark: 'snd_pombark', blip: 'SND_TXT2', squeak: 'snd_squeak', item: 'snd_item'};
 
 export const LINES = {
     pet: ['* (You pet the dog.)', '* (The dog wags its tail.)', '* (Bark!)', '* (The dog seems very pleased.)'],
@@ -26,6 +30,7 @@ export const LINES = {
         "* (It's a small, white dog.)", '* (The dog sniffs your desktop.)', '* (The dog is doing its best.)'],
     notify: ['* (A message! The dog pretends to read it.)', '* (The dog barks at the notification.)'],
     absorb: ['* (The dog absorbed the window.)', '* (The dog chews on what is left of the window.)'],
+    treat: ['* (The dog ate the treat.)', '* (The dog enjoyed the treat very much.)', '* (Crunch.)'],
     sleep: ['* (The dog fell asleep.)'],
     wake: ['* (The dog wakes up.)'],
 };
@@ -35,7 +40,7 @@ function pick(list) {
 }
 
 export class Dog {
-    constructor({index, dir, settings, playSound}) {
+    constructor({index, dir, settings, playSound, font, startAt}) {
         this._index = index;
         this._dir = dir;
         this._settings = settings;
@@ -46,13 +51,20 @@ export class Dog {
             this.pet();
             return Clutter.EVENT_STOP;
         });
-        this._bubble = new St.Label({style_class: 'dogdesk-bubble', opacity: 0, reactive: false});
+        this._box = new TextBox(font, dir);
+        this._bubble = this._box.actor;
         this._bubbleShown = false;
         Main.layoutManager.addChrome(this._bubble, {trackFullscreen: true});
 
-        const wa = this._workArea();
+        const wa = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
         this.x = wa.x + wa.width * (0.2 + Math.random() * 0.6);
         this.y = wa.y + wa.height;
+        // Back where it was last time, if that spot is still on a screen.
+        if (startAt && Main.layoutManager.monitors.some(m =>
+            startAt[0] >= m.x && startAt[0] < m.x + m.width && startAt[1] > m.y && startAt[1] <= m.y + m.height)) {
+            this.x = startAt[0];
+            this.y = startAt[1];
+        }
         this.vy = 0;
         this.facing = 1;
         this.state = 'emerge';
@@ -110,7 +122,9 @@ export class Dog {
             GLib.source_remove(this._typeTimer);
         this._timer = this._typeTimer = 0;
         this.actor.destroy();
-        this._bubble.destroy();
+        this._box.destroy();
+        this._treat?.destroy();
+        this._treat = null;
     }
 
     _now() {
@@ -317,7 +331,8 @@ export class Dog {
                 this._setState('sit');
             break;
         case 'emerge':
-            this._playOnce('emerge', [0, 1, 2, 3, 4, 5, 6, 7], 120, () => this._setState('sit'));
+            this._playOnce('emerge', [0, 1, 2, 3, 4, 5, 6, 7], 120,
+                () => this._setState(this._treat && this._treat.landed ? 'fetch' : 'sit'));
             break;
         case 'dig':
             this._playOnce('emerge', [8, 9, 10], 140, () => {
@@ -327,6 +342,34 @@ export class Dog {
                 this._setState('emerge');
             });
             break;
+        case 'fetch': {
+            // Off to the treat.
+            const tr = this._treat;
+            if (!tr || !tr.landed) {
+                this._animate('talk');
+                break;
+            }
+            if (Math.abs(this.y - tr.y) > 3) {
+                if (this.state === 'fetch' && this.stateTime > 0.3)
+                    this.digTo({x: tr.x - this.facing * 20, y: tr.y});
+                break;
+            }
+            const dx = tr.x - this.x;
+            if (Math.abs(dx) < 14) {
+                this._treat.actor.destroy();
+                this._treat = null;
+                this._setState('chew');
+                this.stateTime = 1.6;   // straight to eating
+                this._playSound(SOUNDS.squeak);
+                if (this._settings.get_boolean('chatty'))
+                    this.say(pick(LINES.treat));
+                break;
+            }
+            this.facing = dx < 0 ? -1 : 1;
+            this.x += this.facing * WALK_SPEED * 1.8 * this._scale() / 2 * dt;
+            this._animate(this.facing < 0 ? 'walkL' : 'walkR', 150);
+            break;
+        }
         case 'chew':
             if (this.stateTime < 1.6)
                 this._animate('scoot', 300);
@@ -474,7 +517,7 @@ export class Dog {
         }
         this._setState('look');
         this.say(pick(LINES.pet));
-        this._playSound('mus_dogappear');
+        this._playSound(SOUNDS.bark);
     }
 
     notified() {
@@ -506,21 +549,87 @@ export class Dog {
         });
     }
 
+    // A treat falls from the top bar (above the pointer, or above the dog) and the dog goes for it.
+    giveTreat() {
+        const info = this._index[SPRITES.treat];
+        if (!info || this._treat)
+            return;
+        // Tossed a little way ahead of the dog, so it trots over for it.
+        const mon = Main.layoutManager.monitors[this._monitor()];
+        let x = this.x + this.facing * (120 + Math.random() * 120);
+        if (x < mon.x + 40 || x > mon.x + mon.width - 40)
+            x = this.x - this.facing * (120 + Math.random() * 120);
+        x = Math.max(mon.x + 40, Math.min(mon.x + mon.width - 40, x));
+        const actor = new St.Widget({width: info.w, height: info.h, reactive: false});
+        const file = GLib.build_filenamev([this._dir, `${SPRITES.treat}_0.png`]);
+        actor.set_style(`background-image: url("file://${file}"); background-size: ${info.w}px ${info.h}px;`);
+        Main.layoutManager.addChrome(actor, {trackFullscreen: true});
+        const treat = {actor, x, y: mon.y + Main.panel.height + info.h, vy: 0, landed: false, info};
+        actor.set_position(Math.round(treat.x - info.w / 2), Math.round(treat.y - info.h));
+        this._treat = treat;
+        const step = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 16, () => {
+            if (this._treat !== treat)
+                return GLib.SOURCE_REMOVE;
+            const surfaces = this._surfaces();
+            treat.vy += GRAVITY * 0.016;
+            const ny = treat.y + treat.vy * 0.016;
+            const land = surfaces.filter(s => s.y >= treat.y - 1 && s.y <= ny && treat.x >= s.x1 && treat.x <= s.x2)
+                .sort((a, b) => a.y - b.y)[0];
+            treat.y = land ? land.y : ny;
+            actor.set_position(Math.round(treat.x - info.w / 2), Math.round(treat.y - info.h));
+            if (land) {
+                treat.landed = true;
+                return GLib.SOURCE_REMOVE;
+            }
+            return GLib.SOURCE_CONTINUE;
+        });
+        if (this.state === 'sleep')
+            this._setState('wake');
+        GLib.timeout_add(GLib.PRIORITY_DEFAULT, 500, () => {
+            if (this._treat === treat)
+                this._setState('fetch');
+            return GLib.SOURCE_REMOVE;
+        });
+        // A treat nobody eats (the dog can't reach it) disappears after a while.
+        GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 30, () => {
+            if (this._treat === treat) {
+                treat.actor.destroy();
+                this._treat = null;
+                if (this.state === 'fetch')
+                    this._setState('sit');
+            }
+            return GLib.SOURCE_REMOVE;
+        });
+    }
+
+    position() {
+        return [Math.round(this.x), Math.round(this.y)];
+    }
+
     // ---- talking -----------------------------------------------------------------------------
 
     say(text) {
         if (this._typeTimer)
             GLib.source_remove(this._typeTimer);
         let n = 0;
-        this._bubble.text = '';
+        this._box.setText(text);
+        this._box.reveal(0);
         this._bubbleShown = true;
-        this._bubble.opacity = 255;
-        this._placeBubble();
-        this._typeTimer = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 35, () => {
-            n++;
-            this._bubble.text = text.slice(0, n);
+        this._bubble.opacity = 0;
+        // Show it once it has its size and its place (next frame), never in a corner first.
+        GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
             this._placeBubble();
-            if (n < text.length)
+            if (this._bubbleShown && this.actor.opacity)
+                this._bubble.opacity = 255;
+            return GLib.SOURCE_REMOVE;
+        });
+        this._typeTimer = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 40, () => {
+            n++;
+            this._box.reveal(n);
+            if (n % 3 === 1 && text[n - 1] !== ' ')
+                this._playSound(SOUNDS.blip);
+            this._placeBubble();
+            if (n < this._box.length)
                 return GLib.SOURCE_CONTINUE;
             this._typeTimer = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 3500, () => {
                 this._bubble.opacity = 0;
@@ -533,7 +642,7 @@ export class Dog {
     }
 
     _placeBubble() {
-        const [bw, bh] = this._bubble.get_size();
+        const [, , bw, bh] = this._bubble.get_preferred_size();
         const info = this._spriteInfo || {h: 40};
         const mon = Main.layoutManager.monitors[this._monitor()];
         let x = Math.round(this.x - bw / 2);

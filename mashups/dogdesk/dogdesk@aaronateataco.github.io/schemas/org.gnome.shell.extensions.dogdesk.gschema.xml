@@ -6,11 +6,13 @@
     <key name="chatty" type="b"><default>true</default>
       <summary>Show the dog's little text boxes</summary></key>
     <key name="sounds" type="b"><default>false</default>
-      <summary>Play Undertale's dog jingle when you pet it</summary></key>
+      <summary>Play the dog's sounds from Undertale (bark, text blips, squeaky treat)</summary></key>
     <key name="hidden" type="b"><default>false</default>
       <summary>Hide the dog</summary></key>
     <key name="idle-sleep-minutes" type="i"><range min="1" max="60"/><default>3</default>
       <summary>Minutes away before the dog naps</summary></key>
+    <key name="last-position" type="(ii)"><default>(-1, -1)</default>
+      <summary>Where the dog was when it last went away</summary></key>
     <key name="data-path" type="s"><default>''</default>
       <summary>Undertale data file (game.unx / data.win / game.ios), if not found automatically</summary></key>
   </schema>

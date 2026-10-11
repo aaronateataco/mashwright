@@ -19,7 +19,7 @@ export default class DogDeskPrefs extends ExtensionPreferences {
         dog.add(nap);
         for (const [key, title, sub] of [
             ['chatty', _('Chatty'), _('Little text boxes now and then')],
-            ['sounds', _('Sounds'), _("Undertale's dog jingle when you pet it")],
+            ['sounds', _('Sounds'), _('Its bark, text blips and squeaky treats, from Undertale')],
             ['hidden', _('Hide the dog'), _('Keep it off the desktop for now')]]) {
             const row = new Adw.SwitchRow({title, subtitle: sub});
             s.bind(key, row, 'active', Gio.SettingsBindFlags.DEFAULT);

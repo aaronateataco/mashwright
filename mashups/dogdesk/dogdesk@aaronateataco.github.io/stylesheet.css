@@ -4,9 +4,12 @@
   color: #fff;
   border: 3px solid #fff;
   border-radius: 0;
-  padding: 8px 12px;
+  padding: 10px 14px;
+  spacing: 2px;
   font-family: "DejaVu Sans Mono", "Adwaita Mono", monospace;
   font-weight: bold;
   font-size: 11pt;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
+
+.dogdesk-bubble-text { color: #fff; }

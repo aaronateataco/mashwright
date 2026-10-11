@@ -14,6 +14,8 @@ function readAt(stream, offset, length) {
 
 function u32(view, o) { return view.getUint32(o, true); }
 
+function le32(a) { return new DataView(a.buffer, a.byteOffset, a.byteLength).getUint32(0, true); }
+
 export class GMData {
     constructor(path) {
         this.file = Gio.File.new_for_path(path);
@@ -34,7 +36,7 @@ export class GMData {
         }
         // The small chunks are read whole; offsets inside the file are absolute.
         this._buf = {};
-        for (const name of ['SPRT', 'TPAG', 'STRG', 'TXTR'])
+        for (const name of ['SPRT', 'TPAG', 'STRG', 'TXTR', 'FONT', 'SOND', 'AUDO'].filter(n => n !== 'AUDO'))
             this._buf[name] = readAt(this.stream, this.chunks[name].start, this.chunks[name].size);
     }
 
@@ -82,6 +84,50 @@ export class GMData {
         return out;
     }
 
+    _tpag(absolute) {
+        const tp = this._view('TPAG');
+        const t = this._at('TPAG', absolute);
+        const s = k => tp.getInt16(t + 2 * k, true);
+        return {sx: s(0), sy: s(1), sw: s(2), sh: s(3), tx: s(4), ty: s(5), page: tp.getUint16(t + 20, true)};
+    }
+
+    // A bitmap font: {tpag, glyphs: {charCode: {x, y, w, h, shift, offset}}}
+    font(name) {
+        const v = this._view('FONT');
+        for (const p of this._list('FONT')) {
+            const o = this._at('FONT', p);
+            if (this._string(u32(v, o)) !== name)
+                continue;
+            const glyphs = {};
+            const n = u32(v, o + 40);
+            for (let i = 0; i < n; i++) {
+                const g = this._at('FONT', u32(v, o + 44 + 4 * i));
+                const r = k => v.getUint16(g + 2 * k, true);
+                glyphs[r(0)] = {x: r(1), y: r(2), w: r(3), h: r(4), shift: v.getInt16(g + 10, true), offset: v.getInt16(g + 12, true)};
+            }
+            return {tpag: this._tpag(u32(v, o + 28)), glyphs};
+        }
+        return null;
+    }
+
+    // An embedded sound's WAV bytes, by name (null if it isn't embedded).
+    sound(name) {
+        const v = this._view('SOND');
+        for (const p of this._list('SOND')) {
+            const o = this._at('SOND', p);
+            if (this._string(u32(v, o)) !== name)
+                continue;
+            const id = v.getInt32(o + 32, true);
+            if (id < 0)
+                return null;
+            const audo = this.chunks.AUDO.start;
+            const ptr = le32(readAt(this.stream, audo + 4 + 4 * id, 4));
+            const len = le32(readAt(this.stream, ptr, 4));
+            return readAt(this.stream, ptr + 4, len);
+        }
+        return null;
+    }
+
     page(index) {
         if (!this._pages)
             this._pages = {};
@@ -103,6 +149,54 @@ export class GMData {
 
     close() {
         this.stream.close(null);
+    }
+}
+
+// Writes <dir>/font_<code>.png for printable ASCII glyphs of a font, scaled; returns the metrics.
+export function extractFont(dataPath, name, dir, scale) {
+    const gm = new GMData(dataPath);
+    try {
+        const f = gm.font(name);
+        if (!f)
+            return null;
+        const page = gm.page(f.tpag.page);
+        const out = {height: 0, glyphs: {}};
+        GLib.mkdir_with_parents(dir, 0o755);
+        for (let code = 32; code < 127; code++) {
+            const g = f.glyphs[code];
+            if (!g)
+                continue;
+            out.height = Math.max(out.height, g.h * scale);
+            out.glyphs[code] = {w: g.w * scale, h: g.h * scale, shift: g.shift * scale, offset: g.offset * scale};
+            if (g.w <= 0 || g.h <= 0)
+                continue;
+            const px = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, true, 8, g.w, g.h);
+            page.copy_area(f.tpag.sx + g.x, f.tpag.sy + g.y, g.w, g.h, px, 0, 0);
+            px.scale_simple(g.w * scale, g.h * scale, GdkPixbuf.InterpType.NEAREST)
+                .savev(GLib.build_filenamev([dir, `font_${code}.png`]), 'png', [], []);
+        }
+        return out;
+    } finally {
+        gm.close();
+    }
+}
+
+// Writes <dir>/<sound>.wav for each embedded sound found; returns the names written.
+export function extractSounds(dataPath, names, dir) {
+    const gm = new GMData(dataPath);
+    try {
+        const done = [];
+        GLib.mkdir_with_parents(dir, 0o755);
+        for (const n of names) {
+            const wav = gm.sound(n);
+            if (wav) {
+                GLib.file_set_contents(GLib.build_filenamev([dir, `${n}.wav`]), wav);
+                done.push(n);
+            }
+        }
+        return done;
+    } finally {
+        gm.close();
     }
 }
 

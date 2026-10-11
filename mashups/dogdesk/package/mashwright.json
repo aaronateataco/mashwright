@@ -2,12 +2,12 @@
   "mashwright": 1,
   "id": "dogdesk",
   "title": "DogDesk",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "authors": [
     "aaronateataco"
   ],
   "license": "MIT",
-  "description": "GNOME \u00d7 Undertale: the small white dog from your own copy of Undertale lives on your GNOME desktop. It trots along your window tops, naps when you're away, notices notifications, sometimes absorbs a window you close, and keeps out of your way (never over fullscreen apps, and it dodges drags). Its sprites and music are read from your Undertale install; nothing from the game is included.",
+  "description": "GNOME \u00d7 Undertale: the small white dog from your own copy of Undertale lives on your GNOME desktop. It trots along your window tops, naps when you're away, notices notifications, sometimes absorbs a window you close, eats the treats you give it, and keeps out of your way (never over fullscreen apps, and it dodges drags). Its sprites and music are read from your Undertale install; nothing from the game is included.",
   "games": [
     {
       "slug": "undertale",
@@ -39,6 +39,6 @@
   },
   "cover": "cover.png",
   "notes": {
-    "firstLaunch": "Needs GNOME Shell 47 or newer. Click the dog to pet it; its menu is in the top bar."
+    "firstLaunch": "Needs GNOME Shell 47 or newer. Log out and back in after the first install. Find it in Quick Settings (the Dog tile): give it a treat, call it over, sounds and more. Click the dog to pet it."
   }
 }
